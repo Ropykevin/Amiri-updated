@@ -103,9 +103,8 @@ for line in Path(sys.argv[1]).read_text(encoding="utf-8").splitlines():
         continue
     key, value = line.split("=", 1)
     vals[key] = value.strip().strip("'").strip('"')
-pg = vals.get("POSTGRES_PASSWORD") or ""
-if not pg:
-    pg = unquote(urlparse(vals.get("DATABASE_URL") or "").password or "")
+url_pw = unquote(urlparse(vals.get("DATABASE_URL") or "").password or "")
+pg = url_pw or vals.get("POSTGRES_PASSWORD") or ""
 print(pg)
 PY
 }
@@ -147,7 +146,7 @@ write_nginx() {
   if [ "$have_certs" -eq 1 ]; then
     cat > "$dest" <<EOF
 upstream amiri_app {
-    server 127.0.0.1:8000;
+    server ${APP_BIND};
     keepalive 16;
 }
 
@@ -210,7 +209,7 @@ EOF
   else
     cat > "$dest" <<EOF
 upstream amiri_app {
-    server 127.0.0.1:8000;
+    server ${APP_BIND};
     keepalive 16;
 }
 
@@ -295,6 +294,9 @@ CERTBOT_EMAIL="${CERTBOT_EMAIL:-$(env_get BREVO_NOTIFY_EMAIL)}"
 CERTBOT_EMAIL="${CERTBOT_EMAIL:-info@${DOMAIN}}"
 PG_PASS="$(pg_password)"
 DB_HOST="$(db_host)"
+APP_BIND="$(env_get GUNICORN_BIND)"
+APP_BIND="${APP_BIND:-127.0.0.1:8000}"
+APP_PORT="${APP_BIND##*:}"
 chmod 640 "$APP_DIR/.env"
 
 log "Creating Python environment"
@@ -328,13 +330,20 @@ log "Seeding database"
 sudo -u "$APP_USER" bash -c "cd '$APP_DIR' && APP_ENV=production '$APP_DIR/venv/bin/python' -c 'from app import boot; boot()'"
 
 log "Installing systemd service"
+systemctl stop amiri 2>/dev/null || true
+fuser -k "${APP_PORT}/tcp" 2>/dev/null || true
 cp "$APP_DIR/deploy/amiri.service" /etc/systemd/system/amiri.service
 sed -i "s#/var/www/amiri#${APP_DIR}#g" /etc/systemd/system/amiri.service
+sed -i "s#GUNICORN_BIND=.*#GUNICORN_BIND=${APP_BIND}#" /etc/systemd/system/amiri.service
 systemctl daemon-reload
 systemctl enable --now amiri
 systemctl restart amiri
 sleep 2
-if ! curl -fsS http://127.0.0.1:8000/healthz | grep -q '"ok":true'; then
+health_hdr=()
+if [ -n "$(env_get HEALTH_TOKEN)" ]; then
+  health_hdr=(-H "X-Health-Token: $(env_get HEALTH_TOKEN)")
+fi
+if ! curl -fsS "${health_hdr[@]}" "http://${APP_BIND}/healthz" | grep -q '"ok":true'; then
   echo "App did not become healthy. Check: journalctl -u amiri -e"
   journalctl -u amiri -n 40 --no-pager || true
   exit 1
@@ -372,6 +381,6 @@ echo
 echo "Site: https://${DOMAIN}"
 echo "Admin: https://${DOMAIN}/admin/login"
 echo "First login: scan the authenticator secret, then enter the 6-digit code."
-echo "Health (on the server): curl -sS http://127.0.0.1:8000/healthz"
+echo "Health (on the server): curl -sS http://${APP_BIND}/healthz"
 echo "Logs: journalctl -u amiri -e"
 echo "To update later, copy new files and rerun: sudo bash ${APP_DIR}/deploy/setup.sh"
