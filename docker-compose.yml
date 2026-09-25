@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: amiri
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: amiri
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - amiri_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U amiri -d amiri"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build: .
+    profiles: ["app"]
+    env_file: .env
+    environment:
+      APP_ENV: production
+      FLASK_DEBUG: "0"
+      BEHIND_PROXY: "0"
+      DATABASE_URL: postgresql://amiri:${POSTGRES_PASSWORD}@db:5432/amiri
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./static/uploads:/app/static/uploads
+      - ./data:/app/data
+
+volumes:
+  amiri_pgdata:

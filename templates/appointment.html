@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "cover" %}
+{% block title %}Get a Quote | Amiri Insurance{% endblock %}
+{% block description %}Request an insurance quote or book an appointment with Amiri Insurance.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Get a quote.</h1>
+        <p>Tell us what you need. We will get back immediately.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Get a quote</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-5">
+            <h2 class="section-title">We will meet you where you are</h2>
+            <p>Whether you need motor, medical, property, or a full business programme, we will walk through the options and send a clear quote.</p>
+            <div class="contact-tile mb-3"><i class="fa-solid fa-phone"></i><h5>Call</h5><p class="mb-0"><a href="tel:+254746158002">+254 746 158 002</a></p></div>
+            <div class="contact-tile"><i class="fa-brands fa-whatsapp"></i><h5>WhatsApp</h5><p class="mb-0"><a href="https://wa.me/254746158002">Chat with an advisor</a></p></div>
+          </div>
+          <div class="col-lg-7">
+            <div class="quote-card">
+              <h3>Appointment request</h3>
+              <form data-amiri-form>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+                <div class="row g-3">
+                  <div class="col-sm-6"><input class="form-control" id="gname" placeholder="Your name" required /></div>
+                  <div class="col-sm-6"><input class="form-control" id="gmail" type="email" placeholder="Email" required /></div>
+                  <div class="col-sm-6"><input class="form-control" id="cname" placeholder="Mobile" required /></div>
+                  <div class="col-sm-6"><input class="form-control" id="prefDate" type="date" required /></div>
+                  <div class="col-sm-6"><input class="form-control" id="prefTime" type="time" required /></div>
+                  <div class="col-sm-6">
+                    <select class="form-select" id="insuranceType" required>
+                      <option value="" selected disabled>Type of cover</option>
+                      <option value="Health Insurance">Health Insurance</option>
+                      <option value="Motor Insurance">Motor Insurance</option>
+                      <option value="Property Insurance">Property Insurance</option>
+                      <option value="Group Life">Group Life</option>
+                      <option value="WIBA">WIBA</option>
+                      <option value="Money Insurance">Money Insurance</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="col-12"><textarea class="form-control" id="message" rows="4" placeholder="Anything we should know?"></textarea></div>
+                  <div class="col-12"><button class="btn btn-primary" type="submit">Request appointment</button></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

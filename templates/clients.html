@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% set active = "clients" %}
+{% block title %}Our Clients | Amiri Insurance{% endblock %}
+{% block description %}Organisations that trust Amiri Insurance Agency with their cover.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Our clients</div>
+        <h1>Organisations we look after.</h1>
+        <p>Schools, NGOs, and businesses that trust Amiri with their insurance.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/about">About</a></li>
+            <li class="breadcrumb-item active">Clients</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="directory-grid">
+          <article class="directory-card">
+            <div class="directory-mark">GI</div>
+            <div>
+              <h3>German Institute</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-mark">LC</div>
+            <div>
+              <h3>LuGo Collection</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-mark">HS</div>
+            <div>
+              <h3>HSDPM</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-mark">HB</div>
+            <div>
+              <h3>Home Biogas</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-mark">EE</div>
+            <div>
+              <h3>Eneza Education</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-mark">MS</div>
+            <div>
+              <h3>Montgomery School</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-mark">UD</div>
+            <div>
+              <h3>Umoja Deliverance</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-mark">NG</div>
+            <div>
+              <h3>NGEL</h3>
+              <p>Amiri client</p>
+            </div>
+          </article>
+        </div>
+        <div class="cta-band d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mt-5">
+          <div>
+            <h2 class="mb-2">Want your organisation listed here?</h2>
+            <p class="mb-0">Tell us what you need. We will get back immediately.</p>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-gold" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Get a quote</button>
+            <a href="/partners" class="btn btn-ghost">See our partners</a>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

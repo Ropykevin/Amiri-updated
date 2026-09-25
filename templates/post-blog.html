@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+{% set active = "insights" %}
+{% block title %}Post a Blog - Amiri Insurance Agency{% endblock %}
+{% block description %}Create and submit your blog post to Amiri Insurance Agency. Share your insights about insurance and financial planning.{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
+{% block extra_head %}
+  <meta name="keywords" content="Amiri Insurance blog post, create blog post, insurance blog writing" />
+  <link rel="stylesheet" href="/static/css/styles2.css" />
+  <link rel="stylesheet" href="/static/css/improvements.css" />
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+  <style>
+        .blog-form {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, #0d6efd, #0b5ed7);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+        }
+
+        .image-preview {
+            max-width: 300px;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .ql-editor {
+            min-height: 200px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #0d6efd, #0b5ed7);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <h1 class="display-3 text-white animated slideInRight">Post a Blog</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb animated slideInRight mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/insights">Blog</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Post Blog</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+
+    
+    <main id="main-content">
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="blog-form">
+                        <div class="text-center mb-5">
+                            <h2 class="display-6 mb-3">Share Your Insurance Insights</h2>
+                            <p class="text-muted">Create engaging content about insurance, financial planning, and risk
+                                management.</p>
+                        </div>
+
+                        
+                        <div class="progress-bar mb-4">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+
+                        <form id="blogPostForm" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    
+                                    <div class="mb-4">
+                                        <label for="blogTitle" class="form-label">Blog Title *</label>
+                                        <input type="text" class="form-control" id="blogTitle" name="title" required
+                                            placeholder="Enter an engaging title for your blog post">
+                                    </div>
+
+                                    
+                                    <div class="mb-4">
+                                        <label for="blogContent" class="form-label">Blog Content *</label>
+                                        <div id="editor" style="height: 300px;"></div>
+                                        <input type="hidden" id="blogContent" name="content">
+                                    </div>
+
+                                    
+                                    <div class="mb-4">
+                                        <label for="blogExcerpt" class="form-label">Blog Excerpt</label>
+                                        <textarea class="form-control" id="blogExcerpt" name="excerpt" rows="3"
+                                            placeholder="Write a brief summary of your blog post (optional)"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    
+                                    <div class="mb-4">
+                                        <label for="authorName" class="form-label">Author Name *</label>
+                                        <input type="text" class="form-control" id="authorName" name="author" required
+                                            placeholder="Your name">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="authorBio" class="form-label">About the author</label>
+                                        <textarea class="form-control" id="authorBio" name="authorBio" rows="4"
+                                            maxlength="800"
+                                            placeholder="A short bio: your role, experience, or what you write about (shown on your article)."></textarea>
+                                        <small class="text-muted">Optional. Up to 800 characters.</small>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Author social links <span class="text-muted fw-normal">(optional)</span></label>
+                                        <input type="url" class="form-control mb-2" id="authorLinkedin" name="authorLinkedin"
+                                            inputmode="url" autocomplete="url" placeholder="LinkedIn profile URL">
+                                        <input type="url" class="form-control mb-2" id="authorTwitter" name="authorTwitter"
+                                            inputmode="url" autocomplete="url" placeholder="X (Twitter) profile URL">
+                                        <input type="url" class="form-control" id="authorWebsite" name="authorWebsite"
+                                            inputmode="url" autocomplete="url" placeholder="Website or blog URL">
+                                    </div>
+
+                                    
+                                    <div class="mb-4">
+                                        <label for="blogCategory" class="form-label">Category *</label>
+                                        <select class="form-select" id="blogCategory" name="category" required>
+                                            <option value="">Select a category</option>
+                                            <option value="Health Insurance">Health Insurance</option>
+                                            <option value="Life Insurance">Life Insurance</option>
+                                            <option value="Property Insurance">Property Insurance</option>
+                                            <option value="Vehicle Insurance">Vehicle Insurance</option>
+                                            <option value="Corporate Insurance">Corporate Insurance</option>
+                                            <option value="Financial Planning">Financial Planning</option>
+                                            <option value="Risk Management">Risk Management</option>
+                                            <option value="Insurance Tips">Insurance Tips</option>
+                                            <option value="Industry News">Industry News</option>
+                                        </select>
+                                    </div>
+
+                                    
+                                    <div class="mb-4">
+                                        <label for="blogTags" class="form-label">Tags</label>
+                                        <input type="text" class="form-control" id="blogTags" name="tags"
+                                            placeholder="Enter tags separated by commas">
+                                        <small class="text-muted">Example: insurance, kenya, health, corporate</small>
+                                    </div>
+
+                                    
+                                    <div class="mb-4">
+                                        <label for="blogImage" class="form-label">Featured Image</label>
+                                        <input type="file" class="form-control" id="blogImage" name="image"
+                                            accept="image/*">
+                                        <div id="imagePreview" class="mt-2"></div>
+                                    </div>
+
+                                    
+                                    <div class="mb-4">
+                                        <label for="publishDate" class="form-label">Publish Date</label>
+                                        <input type="date" class="form-control" id="publishDate" name="publishDate">
+                                    </div>
+
+                                    
+                                    <div class="mb-4">
+                                        <label for="metaDescription" class="form-label">SEO Meta Description</label>
+                                        <textarea class="form-control" id="metaDescription" name="metaDescription"
+                                            rows="3"
+                                            placeholder="Brief description for search engines (optional)"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="text-center mt-5">
+                                <button type="submit" class="btn btn-primary btn-submit me-3">
+                                    <i class="fas fa-paper-plane me-2"></i>Publish Blog Post
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" id="saveDraft">
+                                    <i class="fas fa-save me-2"></i>Save as Draft
+                                </button>
+                            </div>
+                        </form>
+
+                        
+                        <div id="formMessages" class="mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="/static/js/improvements.js"></script>
+<script>
+        // Initialize Quill editor
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Set default publish date to today
+        document.getElementById('publishDate').valueAsDate = new Date();
+
+        // Image preview functionality
+        document.getElementById('blogImage').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('imagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = `<img src="${e.target.result}" class="image-preview" alt="Preview">`;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
+            }
+        });
+
+        // Form validation and submission
+        document.getElementById('blogPostForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get content from Quill editor
+            document.getElementById('blogContent').value = quill.root.innerHTML;
+
+            // Validate form
+            const title = document.getElementById('blogTitle').value.trim();
+            const content = document.getElementById('blogContent').value.trim();
+            const author = document.getElementById('authorName').value.trim();
+            const category = document.getElementById('blogCategory').value;
+
+            if (!title || !content || !author || !category) {
+                showMessage('Please fill in all required fields.', 'error');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = document.querySelector('.btn-submit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Publishing...';
+            submitBtn.disabled = true;
+
+            // Create FormData object for file upload
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('author', author);
+            formData.append('authorBio', document.getElementById('authorBio').value.trim());
+            formData.append('authorLinkedin', document.getElementById('authorLinkedin').value.trim());
+            formData.append('authorTwitter', document.getElementById('authorTwitter').value.trim());
+            formData.append('authorWebsite', document.getElementById('authorWebsite').value.trim());
+            formData.append('category', category);
+            formData.append('excerpt', document.getElementById('blogExcerpt').value);
+            formData.append('tags', document.getElementById('blogTags').value);
+            formData.append('publishDate', document.getElementById('publishDate').value);
+            formData.append('metaDescription', document.getElementById('metaDescription').value);
+
+            // Add image if selected
+            const imageFile = document.getElementById('blogImage').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            // Submit to backend
+            console.log('Submitting blog post...');
+
+            fetch('/api/posts', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+
+                    if (data.success) {
+                        showMessage(data.message + ' Opening the admin dashboard…', 'success');
+                        document.getElementById('blogPostForm').reset();
+                        quill.setText('');
+                        document.getElementById('imagePreview').innerHTML = '';
+                        document.getElementById('publishDate').valueAsDate = new Date();
+                        setTimeout(function () {
+                            window.location.href = '/admin';
+                        }, 1800);
+                    } else {
+                        showMessage(data.message || 'Failed to submit blog post. Please try again.', 'error');
+                        if (data.errors) {
+                            console.log('Validation errors:', data.errors);
+                            showMessage('Please fix the following errors: ' + data.errors.join(', '), 'error');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+
+                    // More detailed error message
+                    let errorMessage = 'An error occurred while submitting the blog post. ';
+                    if (error.message.includes('Failed to fetch')) {
+                        errorMessage += 'The server is not responding. Make sure Flask is running (`py -3 app.py`) and try again.';
+                    } else {
+                        errorMessage += 'Error: ' + error.message;
+                    }
+
+                    showMessage(errorMessage, 'error');
+                });
+        });
+
+        // Save as draft functionality
+        document.getElementById('saveDraft').addEventListener('click', function () {
+            document.getElementById('blogContent').value = quill.root.innerHTML;
+            showMessage('Draft saved successfully!', 'info');
+        });
+
+        // Progress bar functionality
+        function updateProgress() {
+            const fields = ['blogTitle', 'blogContent', 'authorName', 'blogCategory'];
+            let filledFields = 0;
+
+            fields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element && element.value.trim()) {
+                    filledFields++;
+                }
+            });
+
+            const progress = (filledFields / fields.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Update progress on field changes
+        ['blogTitle', 'authorName', 'blogCategory'].forEach(field => {
+            document.getElementById(field).addEventListener('input', updateProgress);
+        });
+
+        // Update progress for Quill editor
+        quill.on('text-change', updateProgress);
+
+        // Message display function
+        function showMessage(message, type) {
+            const messagesDiv = document.getElementById('formMessages');
+            const alertClass = type === 'success' ? 'alert-success' :
+                type === 'error' ? 'alert-danger' : 'alert-info';
+
+            messagesDiv.innerHTML = `
+                <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+{% endblock %}

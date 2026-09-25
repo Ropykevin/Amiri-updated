@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Invoice {{ invoice.number }} | Amiri Insurance</title>
+  <link href="/static/img/icon/icon-02-primary.png" rel="icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0b4a73;
+      --blue: #1572B7;
+      --gold: #F19729;
+      --ink: #12263a;
+      --muted: #5a6a7a;
+      --line: #e6eef5;
+      --paper: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      background: #f4f7fb;
+    }
+    .toolbar {
+      max-width: 820px;
+      margin: 1.25rem auto 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: .5rem;
+      padding: 0 1rem;
+    }
+    .toolbar a, .toolbar button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: .5rem 1rem;
+      font: 600 .9rem "Plus Jakarta Sans", system-ui, sans-serif;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .toolbar .primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+    .sheet {
+      max-width: 820px;
+      margin: .9rem auto 2.5rem;
+      background: var(--paper);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(11, 74, 115, .08);
+      border: 1px solid #e8eef4;
+    }
+    .bar { height: 6px; background: linear-gradient(90deg, var(--blue) 0%, var(--blue) 62%, var(--gold) 100%); }
+    .inner { padding: 2.4rem 2.5rem 2.2rem; }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding-bottom: 1.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; gap: .9rem; align-items: center; }
+    .brand img { width: 46px; height: 46px; }
+    .brand h1 { margin: 0; font-family: Outfit, sans-serif; font-size: 1.28rem; color: var(--navy); letter-spacing: -.02em; }
+    .brand p { margin: .2rem 0 0; color: var(--muted); font-size: .88rem; }
+    .meta { text-align: right; }
+    .kicker {
+      margin: 0 0 .35rem;
+      font-size: .72rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .meta strong { display: block; font-family: Outfit, sans-serif; font-size: 1.55rem; color: var(--navy); letter-spacing: -.03em; }
+    .status {
+      display: inline-block;
+      margin-top: .45rem;
+      padding: .18rem .65rem;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      background: #fff4e0;
+      color: #9a5b08;
+    }
+    .status-paid { background: #e6f7ee; color: #0e7a43; }
+    .status-unpaid { background: #fff4e0; color: #9a5b08; }
+    .status-void { background: #f1f4f7; color: #5a6a7a; }
+    .parties {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.6rem 0 1.4rem;
+    }
+    .label {
+      margin: 0 0 .45rem;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .party strong { display: block; font-size: 1.02rem; margin-bottom: .2rem; }
+    .party p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+    .dates {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin: 0 0 1.6rem;
+      background: #f7fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem 1.15rem;
+    }
+    .dates span { display: block; color: var(--ink); font-weight: 600; margin-top: .2rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: .7rem 0;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+    td { padding: 1rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    td.right, th.right { text-align: right; }
+    .item-title { font-weight: 600; }
+    .item-sub { color: var(--muted); font-size: .88rem; margin-top: .2rem; }
+    .totals { margin-top: .4rem; display: flex; justify-content: flex-end; }
+    .totals table { width: 280px; }
+    .totals td { border: 0; padding: .4rem 0; color: var(--muted); }
+    .totals tr.grand td {
+      padding-top: .85rem;
+      border-top: 1px solid var(--line);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .pay {
+      margin-top: 1.6rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.15rem 1.25rem 1.2rem 1.3rem;
+      background: #fbfdff;
+      border-left: 4px solid var(--blue);
+    }
+    .pay .label { color: var(--blue); }
+    .acct { font-family: Outfit, sans-serif; font-size: 1.12rem; margin: .15rem 0 .15rem; color: var(--navy); }
+    .pay p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .notes {
+      margin-top: 1.2rem;
+      padding: 1rem 1.1rem;
+      background: #f7fafc;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    .notes strong { display: block; color: var(--navy); margin-bottom: .25rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+    footer.inv-foot {
+      margin-top: 1.8rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .84rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    @media (max-width: 700px) {
+      .inner { padding: 1.4rem 1.15rem 1.5rem; }
+      .top, .parties, .dates, footer.inv-foot { grid-template-columns: 1fr; display: grid; text-align: left; }
+      .meta { text-align: left; }
+      .totals table { width: 100%; }
+    }
+    @media print {
+      @page { size: A4; margin: 12mm; }
+      body { background: #fff; }
+      .toolbar { display: none; }
+      .sheet { margin: 0; box-shadow: none; border: 0; border-radius: 0; }
+      .inner { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  {% set pay = invoice.payTo or {} %}
+  {% set amount = "{:,.0f}".format(invoice.amount or 0) %}
+  <div class="toolbar">
+    <a href="/admin#invoices">Back</a>
+    <button type="button" class="primary" onclick="window.print()">Print / Save PDF</button>
+  </div>
+  <div class="sheet">
+    <div class="bar"></div>
+    <div class="inner">
+      <div class="top">
+        <div class="brand">
+          <img src="/static/img/icon/icon-02-primary.png" alt="Amiri" />
+          <div>
+            <h1>Amiri Insurance Agency</h1>
+            <p>Utalii House, 3rd Floor, Wing B, Nairobi</p>
+          </div>
+        </div>
+        <div class="meta">
+          <p class="kicker">Invoice</p>
+          <strong>{{ invoice.number }}</strong>
+          <span class="status status-{{ invoice.status }}">{{ invoice.status }}</span>
+        </div>
+      </div>
+
+      <div class="parties">
+        <div class="party">
+          <p class="label">From</p>
+          <strong>Amiri Insurance Agency</strong>
+          <p>
+            Utalii House, 3rd Floor, Wing B, Utalii Lane<br />
+            Nairobi, Kenya<br />
+            info@amiriinsuranceagency.com<br />
+            +254 746 158 002
+          </p>
+        </div>
+        <div class="party">
+          <p class="label">Bill to</p>
+          <strong>{{ invoice.clientName }}</strong>
+          <p>
+            {{ invoice.clientEmail or "—" }}<br />
+            {{ invoice.clientMobile or "—" }}<br />
+            {{ invoice.clientType|capitalize }} · {{ invoice.cover }}
+          </p>
+        </div>
+      </div>
+
+      <div class="dates">
+        <div>
+          <p class="label">Issued</p>
+          <span>{{ invoice.createdAt or "—" }}</span>
+        </div>
+        <div>
+          <p class="label">Due</p>
+          <span>{{ invoice.dueDate or "Upon receipt" }}</span>
+        </div>
+        <div>
+          <p class="label">Amount due</p>
+          <span>KES {{ amount }}</span>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="item-title">{{ invoice.cover }}</div>
+              <div class="item-sub">{{ invoice.description or "Insurance cover" }}</div>
+            </td>
+            <td class="right">KES {{ amount }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="totals">
+        <table>
+          <tr>
+            <td>Subtotal</td>
+            <td class="right">KES {{ amount }}</td>
+          </tr>
+          <tr class="grand">
+            <td>Total due</td>
+            <td class="right">KES {{ amount }}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="pay">
+        <p class="label">Payment details</p>
+        <div class="acct">{{ pay.accountName or "AMIRI INSURANCE AGENCY" }}</div>
+        <p>{{ pay.bank or "KCB Bank" }} · Account {{ pay.accountNumber or "1272842827" }}</p>
+      </div>
+
+      {% if invoice.notes %}
+      <div class="notes">
+        <strong>Notes</strong>
+        {{ invoice.notes }}
+      </div>
+      {% endif %}
+
+      <footer class="inv-foot">
+        <span>Thank you for choosing Amiri Insurance.</span>
+        <span>Questions? +254 746 158 002</span>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

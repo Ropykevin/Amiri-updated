@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "property" %}
+{% block title %}Property Insurance | Amiri Insurance{% endblock %}
+{% block description %}Fire, burglary, and property insurance for homes and businesses.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Property Insurance</h1>
+        <p>Fire, burglary, and asset cover for homes and commercial premises.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/cover">Cover</a></li>
+            <li class="breadcrumb-item active">Property</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-5 align-items-start">
+          <div class="col-lg-6">
+            <div class="product-hero-img">
+              <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80" alt="Property Insurance" />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="section-kicker">Cover</div>
+            <h2 class="section-title">Property Insurance</h2>
+            <p>With property insurance from Amiri, you know your investments are shielded against the unexpected. We assess your risks and tailor a policy to your home or premises.</p><p>Protecting property is about more than a document — it is about securing your future so you can focus on what matters.</p>
+            <ul class="benefit-list"><li>Fire insurance — rebuild and recover after fire damage</li><li>Burglary insurance — replace stolen property without crushing cost</li></ul>
+            
+            <button type="button" class="btn btn-primary mt-4" data-quote-open data-quote-cover="Property Insurance" data-bs-toggle="modal" data-bs-target="#quoteModal">Get this cover</button>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

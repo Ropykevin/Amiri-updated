@@ -1,0 +1,594 @@
+{% extends "admin_base.html" %}
+{% block title %}Blog Management - Amiri Insurance Agency{% endblock %}
+{% block description %}Admin panel for managing blog posts and content.{% endblock %}
+{% block extra_head %}
+<style>
+        .admin-header {
+            background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+            color: white;
+            padding: 2rem 0;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .blog-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-published {
+            background: #d1edff;
+            color: #0c5460;
+        }
+        
+        .status-draft {
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+        
+        .action-buttons .btn {
+            margin: 2px;
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+        }
+        
+        .blog-preview {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="mb-0">
+                        <img class="img-fluid me-3" src="/static/img/icon/icon-02-light.png" alt="Amiri Insurance Logo" style="width: 40px;" />
+                        Blog Management
+                    </h1>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="/" class="btn btn-outline-light me-2">
+                        <i class="fas fa-home me-2"></i>Back to Site
+                    </a>
+                    <a href="/admin/post" class="btn btn-light">
+                        <i class="fas fa-plus me-2"></i>New Post
+                    </a>
+                    <form method="post" action="/logout" class="d-inline">
+                        <button type="submit" class="btn btn-light">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <i class="fas fa-file-alt fa-2x text-primary mb-3"></i>
+                    <h3 id="totalPosts">0</h3>
+                    <p class="text-muted mb-0">Total Posts</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <i class="fas fa-clock fa-2x text-warning mb-3"></i>
+                    <h3 id="pendingPosts">0</h3>
+                    <p class="text-muted mb-0">Pending Review</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+                    <h3 id="publishedPosts">0</h3>
+                    <p class="text-muted mb-0">Published</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card text-center">
+                    <i class="fas fa-edit fa-2x text-secondary mb-3"></i>
+                    <h3 id="draftPosts">0</h3>
+                    <p class="text-muted mb-0">Drafts</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadErrorBanner" class="alert alert-danger mb-4" style="display: none;" role="alert"></div>
+
+        <!-- Filters and Search -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search blog posts...">
+                    <button class="btn btn-primary" type="button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <select class="form-select d-inline-block w-auto" id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                </select>
+                <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="Health Insurance">Health Insurance</option>
+                    <option value="Life Insurance">Life Insurance</option>
+                    <option value="Property Insurance">Property Insurance</option>
+                    <option value="Vehicle Insurance">Vehicle Insurance</option>
+                    <option value="Corporate Insurance">Corporate Insurance</option>
+                    <option value="Financial Planning">Financial Planning</option>
+                    <option value="Risk Management">Risk Management</option>
+                    <option value="Insurance Tips">Insurance Tips</option>
+                    <option value="Industry News">Industry News</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Blog Posts Table -->
+        <div class="blog-table">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blogTableBody">
+                        <!-- Blog posts will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- No Posts Message -->
+        <div id="noPosts" class="text-center py-5" style="display: none;">
+            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+            <h4>No blog posts found</h4>
+            <p class="text-muted">No posts match your current filters.</p>
+        </div>
+    </div>
+
+    <!-- View Post Modal -->
+    <div class="modal fade" id="viewPostModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Blog Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="viewPostContent">
+                    <!-- Post content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="publishBtn">Publish</button>
+                    <button type="button" class="btn btn-warning" id="editBtn">Edit</button>
+                    <button type="button" class="btn btn-danger" id="deleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <div class="modal fade" id="editPostModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Blog Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPostForm">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="editTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="editTitle" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editContent" class="form-label">Content</label>
+                                    <textarea class="form-control" id="editContent" rows="10" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editExcerpt" class="form-label">Excerpt</label>
+                                    <textarea class="form-control" id="editExcerpt" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="editAuthor" class="form-label">Author</label>
+                                    <input type="text" class="form-control" id="editAuthor" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editAuthorBio" class="form-label">About the author</label>
+                                    <textarea class="form-control" id="editAuthorBio" rows="3" maxlength="800"
+                                        placeholder="Short author bio (shown on the article)"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Author social links <span class="text-muted fw-normal">(optional)</span></label>
+                                    <input type="url" class="form-control mb-2" id="editAuthorLinkedin" inputmode="url" placeholder="LinkedIn URL">
+                                    <input type="url" class="form-control mb-2" id="editAuthorTwitter" inputmode="url" placeholder="X (Twitter) URL">
+                                    <input type="url" class="form-control" id="editAuthorWebsite" inputmode="url" placeholder="Website URL">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editCategory" class="form-label">Category</label>
+                                    <select class="form-select" id="editCategory" required>
+                                        <option value="Health Insurance">Health Insurance</option>
+                                        <option value="Life Insurance">Life Insurance</option>
+                                        <option value="Property Insurance">Property Insurance</option>
+                                        <option value="Vehicle Insurance">Vehicle Insurance</option>
+                                        <option value="Corporate Insurance">Corporate Insurance</option>
+                                        <option value="Financial Planning">Financial Planning</option>
+                                        <option value="Risk Management">Risk Management</option>
+                                        <option value="Insurance Tips">Insurance Tips</option>
+                                        <option value="Industry News">Industry News</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editTags" class="form-label">Tags</label>
+                                    <input type="text" class="form-control" id="editTags" placeholder="Separate with commas">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editStatus" class="form-label">Status</label>
+                                    <select class="form-select" id="editStatus">
+                                        <option value="pending">Pending</option>
+                                        <option value="published">Published</option>
+                                        <option value="draft">Draft</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editPublishDate" class="form-label">Publish Date</label>
+                                    <input type="date" class="form-control" id="editPublishDate">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    
+
+    <!-- Admin Script -->
+{% endblock %}
+{% block extra_scripts %}
+<script src="/static/js/admin-session.js"></script>
+<script>
+        let blogPosts = [];
+        let currentPostId = null;
+
+        function statusLabel(post) {
+            const s = (post.status || 'draft').toString();
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
+
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, function (ch) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+            });
+        }
+
+        function formatAuthorSocialSummary(post) {
+            const s = post.authorSocial || {};
+            const parts = [];
+            if (s.linkedin) parts.push('LinkedIn');
+            if (s.twitter) parts.push('X/Twitter');
+            if (s.website) parts.push('Web');
+            return parts.length ? parts.join(', ') : '—';
+        }
+
+        // Load blog posts (cache-bust so the list matches latest submissions)
+        function loadBlogPosts() {
+            const errEl = document.getElementById('loadErrorBanner');
+            errEl.style.display = 'none';
+            errEl.textContent = '';
+
+            fetch('/api/admin/posts', { cache: 'no-store', credentials: 'same-origin' })
+                .then(response => {
+                    if (response.status === 401) {
+                        window.location.href = '/admin/login?next=/admin';
+                        throw new Error('Please sign in.');
+                    }
+                    if (!response.ok) {
+                        throw new Error('Could not load blog data (HTTP ' + response.status + '). Sign in and open this page via http://localhost:5000/admin');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!Array.isArray(data)) {
+                        throw new Error('Blog data is not in the expected format.');
+                    }
+                    blogPosts = data;
+                    updateStatistics();
+                    renderBlogTable();
+                })
+                .catch(error => {
+                    console.error('Error loading blog posts:', error);
+                    blogPosts = [];
+                    errEl.textContent = error.message || 'Could not load posts. Sign in through Flask at http://localhost:5000/admin/login';
+                    errEl.style.display = 'block';
+                    updateStatistics();
+                    renderBlogTable();
+                });
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const total = blogPosts.length;
+            const pending = blogPosts.filter(post => post.status === 'pending').length;
+            const published = blogPosts.filter(post => post.status === 'published').length;
+            const draft = blogPosts.filter(post => post.status === 'draft').length;
+
+            document.getElementById('totalPosts').textContent = total;
+            document.getElementById('pendingPosts').textContent = pending;
+            document.getElementById('publishedPosts').textContent = published;
+            document.getElementById('draftPosts').textContent = draft;
+        }
+
+        // Render blog table
+        function renderBlogTable() {
+            const tbody = document.getElementById('blogTableBody');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
+
+            let filteredPosts = blogPosts.filter(post => {
+                const bio = (post.authorBio || '').toLowerCase();
+                const matchesSearch = post.title.toLowerCase().includes(searchTerm) ||
+                                    post.author.toLowerCase().includes(searchTerm) ||
+                                    bio.includes(searchTerm);
+                const matchesStatus = statusFilter === 'all' || post.status === statusFilter;
+                const matchesCategory = categoryFilter === 'all' || post.category === categoryFilter;
+
+                return matchesSearch && matchesStatus && matchesCategory;
+            });
+
+            if (filteredPosts.length === 0) {
+                document.getElementById('noPosts').style.display = 'block';
+                tbody.innerHTML = '';
+                return;
+            }
+
+            document.getElementById('noPosts').style.display = 'none';
+            tbody.innerHTML = filteredPosts.map(post => `
+                <tr>
+                    <td>
+                        <strong>${esc(post.title)}</strong>
+                        ${post.excerpt ? `<br><small class="text-muted">${esc(post.excerpt.substring(0, 100))}...</small>` : ''}
+                    </td>
+                    <td>${esc(post.author)}</td>
+                    <td>${esc(post.category)}</td>
+                    <td>
+                        <span class="status-badge status-${esc(post.status || 'draft')}">
+                            ${esc(statusLabel(post))}
+                        </span>
+                    </td>
+                    <td>${post.createdAt ? new Date(post.createdAt).toLocaleDateString() : '—'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewPost('${esc(post.id)}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-warning" onclick="editPost('${esc(post.id)}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deletePost('${esc(post.id)}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // View post
+        function viewPost(postId) {
+            const post = blogPosts.find(p => p.id === postId);
+            if (!post) return;
+
+            currentPostId = postId;
+            const modal = new bootstrap.Modal(document.getElementById('viewPostModal'));
+            
+            function safeHtml(html) {
+                var doc = new DOMParser().parseFromString(String(html || ''), 'text/html');
+                doc.querySelectorAll('script,style,iframe,object,embed,link,meta').forEach(function (el) { el.remove(); });
+                doc.querySelectorAll('*').forEach(function (el) {
+                    Array.from(el.attributes).forEach(function (attr) {
+                        if (attr.name.indexOf('on') === 0 || /javascript:/i.test(attr.value)) {
+                            el.removeAttribute(attr.name);
+                        }
+                    });
+                });
+                return doc.body.innerHTML;
+            }
+            document.getElementById('viewPostContent').innerHTML = `
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>${esc(post.title)}</h4>
+                        <p class="text-muted">
+                            By ${esc(post.author)} | ${esc(post.category)} | ${new Date(post.createdAt).toLocaleDateString()}
+                        </p>
+                        ${post.image ? `<img src="${esc(post.image)}" class="img-fluid mb-3" alt="Blog Image">` : ''}
+                        <div class="blog-preview">
+                            ${safeHtml(post.content)}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Post Details</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Status:</strong> ${esc(post.status)}</li>
+                            <li><strong>Category:</strong> ${esc(post.category)}</li>
+                            <li><strong>Tags:</strong> ${esc(post.tags || 'None')}</li>
+                            <li><strong>Publish Date:</strong> ${esc(post.publishDate)}</li>
+                            <li><strong>Author bio:</strong> ${esc(post.authorBio || '—')}</li>
+                            <li><strong>Author socials:</strong> ${formatAuthorSocialSummary(post)}</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            modal.show();
+        }
+
+        // Edit post
+        function editPost(postId) {
+            const post = blogPosts.find(p => p.id === postId);
+            if (!post) return;
+
+            currentPostId = postId;
+            
+            // Populate form
+            document.getElementById('editTitle').value = post.title;
+            document.getElementById('editContent').value = post.content.replace(/<[^>]*>/g, '');
+            document.getElementById('editExcerpt').value = post.excerpt || '';
+            document.getElementById('editAuthor').value = post.author;
+            document.getElementById('editAuthorBio').value = post.authorBio || '';
+            const soc = post.authorSocial || {};
+            document.getElementById('editAuthorLinkedin').value = soc.linkedin || '';
+            document.getElementById('editAuthorTwitter').value = soc.twitter || '';
+            document.getElementById('editAuthorWebsite').value = soc.website || '';
+            document.getElementById('editCategory').value = post.category;
+            document.getElementById('editTags').value = post.tags || '';
+            document.getElementById('editStatus').value = post.status;
+            document.getElementById('editPublishDate').value = post.publishDate;
+
+            const modal = new bootstrap.Modal(document.getElementById('editPostModal'));
+            modal.show();
+        }
+
+        // Save edit
+        document.getElementById('saveEditBtn').addEventListener('click', function() {
+            const postIndex = blogPosts.findIndex(p => p.id === currentPostId);
+            if (postIndex === -1) return;
+
+            // Update post data
+            blogPosts[postIndex].title = document.getElementById('editTitle').value;
+            blogPosts[postIndex].content = document.getElementById('editContent').value;
+            blogPosts[postIndex].excerpt = document.getElementById('editExcerpt').value;
+            blogPosts[postIndex].author = document.getElementById('editAuthor').value;
+            blogPosts[postIndex].authorBio = document.getElementById('editAuthorBio').value.trim();
+            blogPosts[postIndex].authorSocial = {
+                linkedin: document.getElementById('editAuthorLinkedin').value.trim(),
+                twitter: document.getElementById('editAuthorTwitter').value.trim(),
+                website: document.getElementById('editAuthorWebsite').value.trim()
+            };
+            blogPosts[postIndex].category = document.getElementById('editCategory').value;
+            blogPosts[postIndex].tags = document.getElementById('editTags').value;
+            blogPosts[postIndex].status = document.getElementById('editStatus').value;
+            blogPosts[postIndex].publishDate = document.getElementById('editPublishDate').value;
+
+            // Save to file
+            saveBlogPosts();
+            
+            // Close modal and refresh
+            bootstrap.Modal.getInstance(document.getElementById('editPostModal')).hide();
+            updateStatistics();
+            renderBlogTable();
+        });
+
+        // Delete post
+        function deletePost(postId) {
+            if (confirm('Are you sure you want to delete this blog post?')) {
+                blogPosts = blogPosts.filter(p => p.id !== postId);
+                saveBlogPosts();
+                updateStatistics();
+                renderBlogTable();
+            }
+        }
+
+        // Publish post
+        document.getElementById('publishBtn').addEventListener('click', function() {
+            if (!currentPostId) return;
+            
+            const postIndex = blogPosts.findIndex(p => p.id === currentPostId);
+            if (postIndex === -1) return;
+
+            blogPosts[postIndex].status = 'published';
+            blogPosts[postIndex].publishDate = new Date().toISOString().split('T')[0];
+            
+            saveBlogPosts();
+            bootstrap.Modal.getInstance(document.getElementById('viewPostModal')).hide();
+            updateStatistics();
+            renderBlogTable();
+        });
+
+        // Save blog posts to file
+        function saveBlogPosts() {
+            fetch('/api/admin/posts', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(blogPosts)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    console.error('Failed to save blog posts:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving blog posts:', error);
+            });
+        }
+
+        // Search and filter functionality
+        document.getElementById('searchInput').addEventListener('input', renderBlogTable);
+        document.getElementById('statusFilter').addEventListener('change', renderBlogTable);
+        document.getElementById('categoryFilter').addEventListener('change', renderBlogTable);
+
+        // Initialize
+        if (typeof syncAdminSessionFromFetch === 'function') {
+            syncAdminSessionFromFetch();
+        }
+        loadBlogPosts();
+    </script>
+{% endblock %}

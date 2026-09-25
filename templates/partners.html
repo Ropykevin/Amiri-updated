@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% set active = "partners" %}
+{% block title %}Our Partners | Amiri Insurance{% endblock %}
+{% block description %}Insurers and healthcare providers Amiri Insurance Agency works with across Kenya.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Our partners</div>
+        <h1>The network behind every policy.</h1>
+        <p>Insurers we place cover with, and the hospitals we work alongside for care.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/about">About</a></li>
+            <li class="breadcrumb-item active">Partners</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-kicker">Insurers</div>
+        <h2 class="section-title">Underwriting partners</h2>
+        <p class="mb-4">We place policies with established Kenyan and international insurers so you can choose cover that fits.</p>
+        <div class="directory-grid">
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/britam.png" alt="Britam" /></div>
+            <div>
+              <h3>Britam</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/cic.png" alt="CIC Group" /></div>
+            <div>
+              <h3>CIC</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/jubilee.png" alt="Jubilee Insurance" /></div>
+            <div>
+              <h3>Jubilee</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/icea-lion.png" alt="ICEA LION" /></div>
+            <div>
+              <h3>ICEA LION</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/apa.png" alt="APA Insurance" /></div>
+            <div>
+              <h3>APA</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/ga.svg" alt="GA Insurance" /></div>
+            <div>
+              <h3>GA Insurance</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/kenya-alliance.png" alt="Kenya Alliance" /></div>
+            <div>
+              <h3>Kenya Alliance</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/mua.svg?v=2" alt="MUA" /></div>
+            <div>
+              <h3>MUA</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/geminia.png" alt="Geminia" /></div>
+            <div>
+              <h3>Geminia</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/heritage.png" alt="Heritage" /></div>
+            <div>
+              <h3>Heritage</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/cigna.png" alt="Cigna" /></div>
+            <div>
+              <h3>Cigna</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/allianz.svg" alt="Allianz Global Health" /></div>
+            <div>
+              <h3>Allianz Global Health</h3>
+              <p>Insurance partner</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-kicker mt-5">Healthcare</div>
+        <h2 class="section-title">Tier 1 service providers</h2>
+        <p class="mb-4">Hospitals we work with so members can access quality care when they need it.</p>
+        <div class="directory-grid">
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/aga-khan.png" alt="Aga Khan University Hospital" /></div>
+            <div>
+              <h3>Aga Khan University Hospital</h3>
+              <p>Tier 1 healthcare</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/gertrudes.png" alt="Gertrude’s Children’s Hospital" /></div>
+            <div>
+              <h3>Gertrude’s Children’s Hospital</h3>
+              <p>Tier 1 healthcare</p>
+            </div>
+          </article>
+          <article class="directory-card">
+            <div class="directory-logo"><img src="/static/img/partners/mater.png" alt="The Mater Hospital" /></div>
+            <div>
+              <h3>The Mater Hospital</h3>
+              <p>Tier 1 healthcare</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="cta-band d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mt-5">
+          <div>
+            <h2 class="mb-2">Need cover through this network?</h2>
+            <p class="mb-0">Tell us what you need. We will get back immediately.</p>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-gold" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Get a quote</button>
+            <a href="/clients" class="btn btn-ghost">See our clients</a>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

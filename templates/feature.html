@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "cover" %}
+{% block title %}Why Amiri | Amiri Insurance{% endblock %}
+{% block description %}Reasons clients choose Amiri Insurance Agency.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Why clients stay.</h1>
+        <p>Clear process, fair pricing, and cover that is built around how you actually live.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/cover">Cover</a></li>
+            <li class="breadcrumb-item active">Why Amiri</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3"><div class="value-card"><i class="fa-solid fa-route"></i><h4>Easy process</h4><p class="mb-0">From first call to policy documents, we keep the path short.</p></div></div>
+          <div class="col-md-6 col-lg-3"><div class="value-card"><i class="fa-solid fa-bolt"></i><h4>Fast delivery</h4><p class="mb-0">Quotes and cover notes move quickly so you are never left waiting.</p></div></div>
+          <div class="col-md-6 col-lg-3"><div class="value-card"><i class="fa-solid fa-sliders"></i><h4>Policy control</h4><p class="mb-0">We help you review, adjust, and renew with full visibility.</p></div></div>
+          <div class="col-md-6 col-lg-3"><div class="value-card"><i class="fa-solid fa-piggy-bank"></i><h4>Fair pricing</h4><p class="mb-0">We shop the market so you pay for protection, not padding.</p></div></div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

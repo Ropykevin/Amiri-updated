@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% set active = "about" %}
+{% block title %}About Us | Amiri Insurance{% endblock %}
+{% block description %}Learn about Amiri Insurance Agency, Kenya's trusted insurance partner since 2017.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>We close the insurance gap — with care.</h1>
+        <p>A Nairobi agency built for Kenyan families and businesses since 2017.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">About</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-5 align-items-center">
+          <div class="col-lg-6">
+            <div class="photo-frame">
+              <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80" alt="Amiri team in discussion" />
+              <div class="experience-badge"><b>9</b>Years of care</div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="section-kicker">Our story</div>
+            <h2 class="section-title">Empowering you with cover that actually fits</h2>
+            <p>Amiri Insurance Agency, founded in 2017, has grown into one of Kenya’s trusted insurance partners. With a client base exceeding 50,000 and a wide insurer network, we specialise in cover that matches real lives — not generic packages.</p>
+            <p>We are attuned to the Kenyan market, with streamlined products that make insurance easier to buy and easier to keep. Our values are integrity, transparency, respect, customer satisfaction, and teamwork.</p>
+            <a href="tel:+254746158002" class="btn btn-primary mt-2">Talk to us</a>
+          </div>
+        </div>
+        <div class="row g-4 mt-5">
+          <div class="col-md-4"><div class="value-card"><i class="fa-solid fa-eye"></i><h3>Vision</h3><p class="mb-0">To be Kenya’s answer to the insurance gap — and to help people live with more confidence.</p></div></div>
+          <div class="col-md-4"><div class="value-card"><i class="fa-solid fa-bullseye"></i><h3>Mission</h3><p class="mb-0">To protect the future of our customers with solutions that are clear, fair, and close at hand.</p></div></div>
+          <div class="col-md-4"><div class="value-card"><i class="fa-solid fa-heart"></i><h3>Values</h3><p class="mb-0">Integrity, collaboration, and a customer-first way of working — every policy, every claim.</p></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="stats-band">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <h2 class="section-title">For individuals and corporates</h2>
+            <p class="mb-0">Personal cover for home and family, or a full programme for your business assets — we tailor the mix to your risk.</p>
+          </div>
+          <div class="col-lg-6">
+            <div class="row g-4">
+              <div class="col-4"><div class="stat-num" data-toggle="counter-up">50000</div><p class="mt-2 mb-0">Clients</p></div>
+              <div class="col-4"><div class="stat-num" data-toggle="counter-up">40000</div><p class="mt-2 mb-0">Partners</p></div>
+              <div class="col-4"><div class="stat-num" data-toggle="counter-up">9</div><p class="mt-2 mb-0">Years</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

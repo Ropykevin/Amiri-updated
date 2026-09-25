@@ -1,0 +1,408 @@
+{% extends "admin_base.html" %}
+{% block title %}Admin Login - Amiri Insurance Agency{% endblock %}
+{% block description %}Admin login for Amiri Insurance Agency blog management.{% endblock %}
+{% block extra_head %}
+<style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(900px 420px at 0% 0%, rgba(21, 114, 183, 0.12), transparent 55%),
+                radial-gradient(700px 380px at 100% 100%, rgba(241, 151, 41, 0.1), transparent 50%),
+                #f5f8fb;
+        }
+
+        .login-container {
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 24px 60px rgba(11, 74, 115, 0.12);
+            overflow: hidden;
+            max-width: 420px;
+            width: 100%;
+            border: 1px solid rgba(21, 114, 183, 0.12);
+        }
+
+        .login-header {
+            background: #0b4a73;
+            color: white;
+            padding: 28px 30px 24px;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .login-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .login-form {
+            padding: 32px 28px 28px;
+            background: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #0b4a73;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: #1572B7;
+            box-shadow: 0 0 0 0.2rem rgba(21, 114, 183, 0.28);
+            outline: none;
+        }
+
+   
+
+        .login-form .input-group .form-control {
+            position: relative;
+            z-index: 1;
+            padding-left: 3rem;
+            padding-right: 0.75rem;
+            min-height: 48px;
+            color: #212529;
+            background-color: #fff;
+            -webkit-text-fill-color: #212529;
+            caret-color: #212529;
+            text-indent: 0;
+            letter-spacing: normal;
+        }
+
+        .login-form .login-field-password .form-control {
+            padding-right: 3rem;
+        }
+
+        .login-form .form-control::placeholder {
+            color: #6c757d;
+            opacity: 1;
+        }
+
+        .login-form input:-webkit-autofill,
+        .login-form input:-webkit-autofill:hover,
+        .login-form input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px #fff inset;
+            box-shadow: 0 0 0 1000px #fff inset;
+            -webkit-text-fill-color: #212529;
+        }
+
+        .btn-login {
+            background: #1572B7;
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+        }
+
+        .btn-login:hover {
+            background: #0f5a91;
+            color: white;
+        }
+
+        .alert {
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #5a6a7a;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link a:hover {
+            color: #1572B7;
+        }
+
+        .login-form .password-toggle {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 3;
+            padding: 0.35rem;
+        }
+
+        .password-toggle:hover {
+            color: #1572B7;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="login-container">
+        <div class="login-header">
+            <h1>
+                <img class="img-fluid me-2" src="/static/img/icon/icon-02-light.png" alt="Amiri Insurance Logo" style="width: 30px;" />
+                Admin Login
+            </h1>
+            <p>Sign in to the Amiri workspace</p>
+        </div>
+
+        <div class="login-form">
+            <div id="liveServerNotice" class="alert alert-warning small mb-3 py-2" role="status" style="display: none;">
+                <strong>Flask required.</strong> Open this site through the Flask app, not as a file and not through Live Server.
+                In a terminal at your project folder run:
+                <code class="d-block mt-1">py -3 -m pip install -r requirements.txt</code>
+                <code class="d-block mt-1">py -3 app.py</code>
+                Then visit <a href="http://localhost:5000/admin/login">http://localhost:5000/admin/login</a>
+            </div>
+            <div id="alertMessage"></div>
+            <div id="approvalHint" class="alert alert-info small mb-3 py-2" role="status" style="display: none;">
+                Sign in to open the blog admin and approve or publish pending posts.
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" class="form-control" id="username" name="username" required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group login-field-password">
+                        <span class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" class="form-control" id="password" name="password" required autocomplete="current-password">
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="passwordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="mfaBox" style="display:none;">
+                    <label for="mfaCode" class="form-label">Authenticator code</label>
+                    <input type="text" class="form-control" id="mfaCode" name="mfa" inputmode="numeric" autocomplete="one-time-code" maxlength="6" />
+                    <p class="small text-muted mt-2 mb-0" id="mfaHint"></p>
+                    <code id="mfaSecret" class="d-block small mt-2" style="display:none;"></code>
+                </div>
+
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+            </form>
+
+            <div class="back-link">
+                <a href="/">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Website
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+{% endblock %}
+{% block extra_scripts %}
+<script src="/static/js/admin-session.js"></script>
+<script>
+        (function () {
+            var port = parseInt(window.location.port, 10);
+            var liveServer = port >= 5500 && port <= 5510;
+            var fileProto = window.location.protocol === 'file:';
+            if (liveServer || fileProto) {
+                var el = document.getElementById('liveServerNotice');
+                if (el) el.style.display = 'block';
+            }
+        })();
+
+        /** After login: only same-site admin blog targets (no open redirects). */
+        function getPostLoginRedirect() {
+            var params = new URLSearchParams(window.location.search);
+            var raw = params.get('next');
+            if (!raw) {
+                return '/admin';
+            }
+            var next;
+            try {
+                next = decodeURIComponent(raw.trim());
+            } catch (e) {
+                return '/admin';
+            }
+            if (next.indexOf('://') !== -1 || next.indexOf('//') === 0 || next.indexOf('..') !== -1) {
+                return '/admin';
+            }
+            if (next.indexOf('/admin') === 0) {
+                return next;
+            }
+            return '/admin';
+        }
+
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('next')) {
+                var hint = document.getElementById('approvalHint');
+                if (hint) {
+                    hint.style.display = 'block';
+                }
+            }
+        })();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof syncAdminSessionFromFetch !== 'function') return;
+            syncAdminSessionFromFetch().then(function (data) {
+                if (data && data._networkError) return;
+                if (data && data.logged_in && data.username) {
+                    window.location.replace(getPostLoginRedirect());
+                }
+            });
+        });
+
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.className = 'fas fa-eye';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const mfaCode = (document.getElementById('mfaCode').value || '').trim();
+            const mfaBox = document.getElementById('mfaBox');
+            
+            // Show loading state
+            const submitBtn = document.querySelector('.btn-login');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logging in...';
+            submitBtn.disabled = true;
+            const path = mfaBox.style.display === 'none' ? '/api/auth/login' : '/api/auth/mfa';
+            const body = path === '/api/auth/login'
+                ? { username: username, password: password }
+                : { code: mfaCode };
+            
+            fetch(path, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(body)
+            })
+            .then(async (response) => {
+                const text = await response.text();
+                let data;
+                try {
+                    data = text ? JSON.parse(text) : {};
+                } catch (e) {
+                    console.error('Login: non-JSON response', text);
+                    const hint = (window.location.protocol === 'file:')
+                        ? ' Open this page through Flask (run `py -3 app.py` then visit http://localhost:5000/admin/login).'
+                        : ' The server did not return JSON. Make sure Flask is running.';
+                    showAlert('Login could not complete.' + hint, 'danger');
+                    return;
+                }
+                if (data.success && (data.mfaRequired || data.mfaSetup)) {
+                    mfaBox.style.display = 'block';
+                    document.getElementById('mfaHint').textContent = data.message || 'Enter the 6-digit code.';
+                    var secretEl = document.getElementById('mfaSecret');
+                    if (data.secret) {
+                        secretEl.style.display = 'block';
+                        secretEl.textContent = data.secret;
+                    } else {
+                        secretEl.style.display = 'none';
+                    }
+                    showAlert(data.message || 'Authenticator code required.', 'info');
+                    return;
+                }
+                if (data.success) {
+                    if (typeof setAdminSessionStorage === 'function') {
+                        setAdminSessionStorage(username);
+                    }
+                    showAlert('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = getPostLoginRedirect();
+                    }, 1000);
+                } else {
+                    showAlert(
+                        (data && data.message) ? data.message : 'Login failed. Please check your credentials.',
+                        'danger'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                const hint = (window.location.protocol === 'file:')
+                    ? ' Use Flask: in your project folder run `py -3 app.py` and open http://localhost:5000/admin/login'
+                    : ' Check your network connection and that Flask is running.';
+                showAlert('Could not reach the login service.' + hint, 'danger');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.replaceChildren();
+            const box = document.createElement('div');
+            const safeType = type === 'success' || type === 'info' ? type : 'danger';
+            box.className = 'alert alert-' + safeType + ' alert-dismissible fade show';
+            box.setAttribute('role', 'alert');
+            box.appendChild(document.createTextNode(message));
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.className = 'btn-close';
+            close.setAttribute('data-bs-dismiss', 'alert');
+            box.appendChild(close);
+            alertDiv.appendChild(box);
+        }
+
+        // Clear alert when form inputs change
+        document.getElementById('username').addEventListener('input', function() {
+            document.getElementById('alertMessage').innerHTML = '';
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            document.getElementById('alertMessage').innerHTML = '';
+        });
+    </script>
+{% endblock %}

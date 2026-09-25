@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="{% block description %}Kenya's trusted insurance partner since 2017. Health, motor, property, life, and business cover.{% endblock %}" />
+  <meta name="author" content="Amiri Insurance Agency" />
+  <meta name="robots" content="{% block robots %}index, follow{% endblock %}" />
+  <title>{% block title %}Amiri Insurance{% endblock %}</title>
+  <link href="/static/img/icon/icon-02-primary.png" rel="icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="/static/lib/animate/animate.min.css" rel="stylesheet" />
+  <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/static/css/style.css" rel="stylesheet" />
+  <link href="/static/css/modern.css?v=app2" rel="stylesheet" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div id="spinner"
+    class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-grow" role="status"></div>
+  </div>
+
+  <div class="amiri-topbar d-none d-lg-block">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="d-flex gap-4">
+        <span><span class="dot"></span>Utalii House Nairobi · Mon–Fri 9:00 AM – 9:00 PM</span>
+        <a href="tel:+254746158002"><i class="fa fa-phone-alt me-2"></i>+254 746 158 002</a>
+        <a href="mailto:info@amiriinsuranceagency.com"><i class="far fa-envelope me-2"></i>info@amiriinsuranceagency.com</a>
+      </div>
+      <div class="d-flex gap-3">
+        <a target="_blank" rel="noopener" href="https://www.facebook.com/amiriinsurance/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a target="_blank" rel="noopener" href="https://twitter.com/amiriinsurance" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a target="_blank" rel="noopener" href="https://www.instagram.com/amiriinsurance/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a target="_blank" rel="noopener" href="https://www.linkedin.com/company/104630355/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg site-nav sticky-top">
+    <div class="container">
+      <a href="/" class="navbar-brand">
+        <img src="/static/img/icon/icon-02-primary.png" alt="Amiri Insurance" />
+        <span class="brand-lockup">
+          <strong>Amiri</strong>
+          <small>Insurance</small>
+        </span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav mx-auto">
+          <a href="/" class="nav-item nav-link{% if active|default('') == 'home' %} active{% endif %}">Home</a>
+          <div class="nav-item dropdown">
+            <a href="/about" class="nav-link dropdown-toggle{% if active|default('') in ['about', 'clients', 'partners'] %} active{% endif %}" data-bs-toggle="dropdown">About</a>
+            <div class="dropdown-menu">
+              <a href="/about" class="dropdown-item{% if active|default('') == 'about' %} active{% endif %}">About us</a>
+              <a href="/clients" class="dropdown-item{% if active|default('') == 'clients' %} active{% endif %}">Clients</a>
+              <a href="/partners" class="dropdown-item{% if active|default('') == 'partners' %} active{% endif %}">Partners</a>
+            </div>
+          </div>
+          <div class="nav-item dropdown">
+            <a href="/cover" class="nav-link dropdown-toggle{% if active|default('') == 'cover' %} active{% endif %}" data-bs-toggle="dropdown">Cover</a>
+            <div class="dropdown-menu">
+              <a href="/health" class="dropdown-item{% if cover_page|default('') == 'health' %} active{% endif %}">Health Insurance</a>
+              <a href="/motor" class="dropdown-item{% if cover_page|default('') == 'motor' %} active{% endif %}">Motor Insurance</a>
+              <a href="/property" class="dropdown-item{% if cover_page|default('') == 'property' %} active{% endif %}">Property Insurance</a>
+              <a href="/group-life" class="dropdown-item{% if cover_page|default('') == 'group-life' %} active{% endif %}">Group Life</a>
+              <a href="/wiba" class="dropdown-item{% if cover_page|default('') == 'wiba' %} active{% endif %}">WIBA</a>
+              <a href="/money" class="dropdown-item{% if cover_page|default('') == 'money' %} active{% endif %}">Money Insurance</a>
+              <a href="/cover" class="dropdown-item{% if cover_page|default('') == 'cover' %} active{% endif %}">All services</a>
+            </div>
+          </div>
+          <a href="/insights" class="nav-item nav-link{% if active|default('') == 'insights' %} active{% endif %}">Insights</a>
+          <a href="/contact" class="nav-item nav-link{% if active|default('') == 'contact' %} active{% endif %}">Contact</a>
+        </div>
+        <button type="button" class="btn btn-gold nav-cta mt-3 d-lg-none" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Get a quote</button>
+      </div>
+      <button type="button" class="btn btn-gold nav-cta d-none d-lg-inline-flex" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Get a quote</button>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="amiri-footer footer">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-4">
+          <a href="/" class="navbar-brand mb-3">
+            <img src="/static/img/icon/icon-02-light.png" alt="Amiri" />
+            <span class="brand-lockup">
+              <strong style="color:#fff;">Amiri</strong>
+              <small>Insurance</small>
+            </span>
+          </a>
+          <p class="mt-3">A partner who can look after your insurance needs across Kenya — with care, speed, and straight answers.</p>
+          <div class="socials d-flex mt-3">
+            <a target="_blank" rel="noopener" href="https://www.facebook.com/amiriinsurance/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a target="_blank" rel="noopener" href="https://twitter.com/amiriinsurance" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a target="_blank" rel="noopener" href="https://www.instagram.com/amiriinsurance/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a target="_blank" rel="noopener" href="https://www.linkedin.com/company/104630355/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4">
+          <h5 class="mb-4">Visit</h5>
+          <p>Utalii House, 3rd Floor, Wing B, Utalii Lane, Nairobi</p>
+          <p><a href="tel:+254746158002">+254 746 158 002</a></p>
+          <p><a href="mailto:info@amiriinsuranceagency.com">info@amiriinsuranceagency.com</a></p>
+        </div>
+        <div class="col-lg-3 col-md-4">
+          <h5 class="mb-4">Explore</h5>
+          <a class="btn btn-link" href="/about">About us</a>
+          <a class="btn btn-link" href="/clients">Clients</a>
+          <a class="btn btn-link" href="/partners">Partners</a>
+          <a class="btn btn-link" href="/cover">Services</a>
+          <button type="button" class="btn btn-link" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Get a quote</button>
+          <a class="btn btn-link" href="/insights">Insights</a>
+          <a class="btn btn-link" href="/contact">Contact</a>
+        </div>
+        <div class="col-lg-3 col-md-4">
+          <h5 class="mb-4">Newsletter</h5>
+          <p>Insurance news and practical tips, once in a while.</p>
+          <form id="mc-embedded-subscribe-form" class="newsletter-box">
+            <input type="email" id="emailInput" name="EMAIL" placeholder="Your email" required />
+            <button type="submit" class="btn btn-gold py-2 px-3" id="subscribeButton">Join</button>
+          </form>
+          <p id="responseMessage" class="mt-2 mb-0"></p>
+        </div>
+      </div>
+      <div class="copyright">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+          <span>&copy; <span data-year></span> Amiri Insurance Agency. All rights reserved.</span>
+          <span>Designed by <a href="https://techelar.co.ke">Techelar</a></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="quoteModal" tabindex="-1" aria-labelledby="quoteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content quote-modal">
+        <div class="modal-header">
+          <div>
+            <h3 class="modal-title" id="quoteModalTitle">Get a quote</h3>
+            <p class="quote-modal-cover mb-0" data-quote-cover-label hidden></p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3">Tell us what you need. We will get back immediately.</p>
+          <form data-amiri-form data-quote-form>
+            <input type="text" id="quote-website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+            <div class="row g-3">
+              <div class="col-12">
+                <input class="form-control" id="quote-gname" name="gname" placeholder="Full name" required />
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" id="quote-gmail" name="gmail" type="email" placeholder="Email" required />
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" id="quote-cname" name="cname" type="tel" placeholder="Mobile" required />
+              </div>
+              <div class="col-12">
+                <select class="form-select" id="quote-insuranceType" name="insuranceType" required>
+                  <option value="" selected disabled>Select cover</option>
+                  <option value="Health Insurance">Health Insurance</option>
+                  <option value="Motor Insurance">Motor Insurance</option>
+                  <option value="Property Insurance">Property Insurance</option>
+                  <option value="Group Life">Group Life</option>
+                  <option value="WIBA">WIBA</option>
+                  <option value="Money Insurance">Money Insurance</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <textarea class="form-control" id="quote-message" name="message" rows="3" placeholder="Anything we should know?"></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary w-100" type="submit">Send request</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="float-stack">
+    <a class="float-btn wa" href="https://wa.me/254746158002" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp fa-lg"></i></a>
+    <a class="float-btn call" href="tel:+254746158002" aria-label="Call us"><i class="fa fa-phone"></i></a>
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" aria-label="Back to top"><i class="bi bi-arrow-up"></i></a>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/lib/wow/wow.min.js"></script>
+  <script src="/static/lib/easing/easing.min.js"></script>
+  <script src="/static/lib/waypoints/waypoints.min.js"></script>
+  <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="/static/lib/counterup/counterup.min.js"></script>
+  <script src="/static/js/main.js"></script>
+  <script src="/static/js/site.js"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

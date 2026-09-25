@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "health" %}
+{% block title %}Health Insurance | Amiri Insurance{% endblock %}
+{% block description %}Health insurance for families and workforces in Kenya.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Health Insurance</h1>
+        <p>Protect well-being and the bills that come with it.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/cover">Cover</a></li>
+            <li class="breadcrumb-item active">Health</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-5 align-items-start">
+          <div class="col-lg-6">
+            <div class="product-hero-img">
+              <img src="https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&w=1200&q=80" alt="Health Insurance" />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="section-kicker">Cover</div>
+            <h2 class="section-title">Health Insurance</h2>
+            <p>Health insurance is a financial safety net that helps individuals and families manage the cost of medical care — so you can focus on getting better, not on invoices.</p><p>Investing in health cover is a practical step toward long-term security. With a range of plans, you can choose protection that fits your household or your staff.</p>
+            <ul class="benefit-list"><li>Comprehensive coverage across a wide range of medical services</li><li>Protection against high out-of-pocket costs</li><li>Access to quality care</li><li>Mental health benefits on many plans</li><li>Flexible options for families and groups</li></ul>
+            <div class="value-card mt-4"><h4>Group Medical</h4><p class="mb-0">A healthy workforce drives success. We offer customised medical packages aligned with WHO standards, at competitive rates for your employees.</p></div>
+            <button type="button" class="btn btn-primary mt-4" data-quote-open data-quote-cover="Health Insurance" data-bs-toggle="modal" data-bs-target="#quoteModal">Get this cover</button>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

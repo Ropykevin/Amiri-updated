@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "money" %}
+{% block title %}Money Insurance | Amiri Insurance{% endblock %}
+{% block description %}Protect cash on site and in transit with money insurance.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Money Insurance</h1>
+        <p>Secure cash on site and in transit from theft, fraud, and loss.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/cover">Cover</a></li>
+            <li class="breadcrumb-item active">Money</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-5 align-items-start">
+          <div class="col-lg-6">
+            <div class="product-hero-img">
+              <img src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1200&q=80" alt="Money Insurance" />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="section-kicker">Cover</div>
+            <h2 class="section-title">Money Insurance</h2>
+            <p>Money insurance protects financial assets against theft, fraud, and loss — whether you are moving business cash or securing funds on site.</p><p>In an unpredictable world this cover is a safety net during interruptions, so a single incident does not become a crippling loss. It suits small businesses handling daily cash and anyone who needs to secure funds in transit.</p>
+            <ul class="benefit-list"><li>Cash on premises</li><li>Cash in transit</li><li>Theft and fraud protection</li><li>Faster recovery after a loss</li></ul>
+            
+            <button type="button" class="btn btn-primary mt-4" data-quote-open data-quote-cover="Money Insurance" data-bs-toggle="modal" data-bs-target="#quoteModal">Get this cover</button>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

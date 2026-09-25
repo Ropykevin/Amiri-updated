@@ -1,0 +1,412 @@
+:root {
+  --navy: #0b4a73;
+  --ink: #0e3a58;
+  --blue: #1572B7;
+  --gold: #F19729;
+  --gold-soft: #ffc56a;
+  --mist: #eef5fb;
+  --paper: #ffffff;
+  --muted: #5a6a7a;
+  --line: rgba(21, 114, 183, 0.12);
+  --shadow: 0 14px 40px rgba(11, 74, 115, 0.08);
+}
+
+body.admin-app {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 420px at -8% -10%, rgba(21, 114, 183, 0.08), transparent 55%),
+    radial-gradient(720px 380px at 110% 0%, rgba(241, 151, 41, 0.08), transparent 50%),
+    #f5f8fb;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  color: var(--ink);
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.admin-side {
+  background: linear-gradient(180deg, #0b4a73 0%, #1572B7 100%);
+  color: rgba(255, 255, 255, 0.82);
+  padding: 1.5rem 1.1rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+
+.admin-brand img {
+  width: 36px;
+  height: 36px;
+}
+
+.admin-brand strong {
+  display: block;
+  font-family: Outfit, sans-serif;
+  font-size: 1.05rem;
+}
+
+.admin-brand small {
+  color: var(--gold-soft);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.admin-nav button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.admin-nav button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.admin-nav button.active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.admin-main {
+  padding: 1.5rem 1.8rem 3rem;
+}
+
+.admin-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.admin-top h1 {
+  font-family: Outfit, sans-serif;
+  font-size: 1.7rem;
+  margin: 0;
+  color: var(--navy);
+  letter-spacing: -0.03em;
+}
+
+.admin-top p {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+}
+
+.admin-app .btn {
+  border-radius: 12px;
+  font-weight: 700;
+  padding: 0.55rem 1.05rem;
+  transform: none;
+}
+
+.admin-app .btn:hover {
+  transform: none;
+}
+
+.admin-app .btn-primary {
+  background: var(--blue) !important;
+  border: 0 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 18px rgba(21, 114, 183, 0.22);
+}
+
+.admin-app .btn-primary:hover {
+  background: #0f5a91 !important;
+  color: #fff !important;
+}
+
+.admin-app .btn-outline-primary {
+  color: var(--blue) !important;
+  border: 1.5px solid var(--blue) !important;
+  background: #fff !important;
+}
+
+.admin-app .btn-outline-primary:hover {
+  background: var(--mist) !important;
+  color: var(--navy) !important;
+}
+
+.admin-app .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+}
+
+.admin-app .btn-outline-secondary {
+  color: var(--navy) !important;
+  border: 1.5px solid var(--line) !important;
+  background: #fff !important;
+}
+
+.admin-app .form-control,
+.admin-app .form-select {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-radius: 12px;
+  min-height: 46px;
+}
+
+.admin-app .form-control:focus,
+.admin-app .form-select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(21, 114, 183, 0.14);
+}
+
+.admin-app .form-label {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.crm-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.file-chip {
+  display: inline-block;
+  margin: 0 0.4rem 0.4rem 0;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--mist);
+  font-size: 0.82rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.file-chip:hover {
+  background: #fff;
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.stat-card,
+.panel-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card {
+  padding: 1.15rem 1.2rem;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: var(--blue);
+}
+
+.stat-card:nth-child(even)::before {
+  background: var(--gold);
+}
+
+.stat-card span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 1.35rem;
+  font-family: Outfit, sans-serif;
+  margin-top: 0.25rem;
+  color: var(--navy);
+}
+
+.panel-card {
+  padding: 1.25rem 1.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.panel-card h5 {
+  color: var(--navy);
+  font-family: Outfit, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.panel-card .text-muted {
+  color: var(--muted) !important;
+}
+
+.panel-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.admin-app .table {
+  margin: 0;
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: var(--mist);
+  color: var(--ink);
+}
+
+.admin-app .table thead th {
+  color: var(--blue);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom-color: var(--line);
+  font-weight: 700;
+}
+
+.admin-app .table > :not(caption) > * > * {
+  background: transparent;
+  border-bottom-color: var(--line);
+  vertical-align: middle;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-new { background: #fff4e5; color: #8a4b00; }
+.status-contacted { background: #e7f3fb; color: #0b4a73; }
+.status-quoted { background: #fff4e5; color: #8a4b00; }
+.status-won { background: #e7f3fb; color: #0b4a73; }
+.status-closed { background: #eef1f4; color: #0e3a58; }
+.status-pending { background: #fff4e5; color: #8a4b00; }
+.status-published { background: #e7f3fb; color: #0b4a73; }
+.status-draft { background: #eef1f4; color: #0e3a58; }
+.status-unpaid { background: #fff4e5; color: #8a4b00; }
+.status-paid { background: #e7f3fb; color: #0b4a73; }
+.status-void { background: #eef1f4; color: #0e3a58; }
+
+.reach-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  margin-right: 0.25rem;
+  background: #fff;
+}
+
+.reach-btn:hover {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+
+.admin-section { display: none; }
+.admin-section.active { display: block; }
+
+#crmModal .modal-content,
+#invoiceModal .modal-content {
+  border: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(11, 74, 115, 0.18);
+}
+
+#crmModal .modal-header,
+#invoiceModal .modal-header {
+  background: #fff;
+  color: var(--navy);
+  border-bottom: 1px solid var(--line);
+}
+
+#crmModal .modal-header .modal-title,
+#invoiceModal .modal-header .modal-title {
+  color: var(--navy) !important;
+  font-family: Outfit, sans-serif;
+}
+
+#crmModal .modal-header #crmMeta,
+#invoiceModal .modal-header #invMeta {
+  color: var(--muted) !important;
+}
+
+#crmModal .btn-close,
+#invoiceModal .btn-close {
+  filter: none;
+}
+
+.pay-to-card {
+  background: #fbfdff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 14px;
+  padding: 1.05rem 1.15rem;
+}
+
+.pay-to-card strong {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.pay-to-name {
+  font-family: Outfit, sans-serif;
+  font-size: 1.08rem;
+  margin: 0.4rem 0 0.15rem;
+  color: var(--navy);
+}
+
+@media (max-width: 991.98px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+  .admin-side {
+    height: auto;
+    position: relative;
+  }
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .crm-split {
+    grid-template-columns: 1fr;
+  }
+}

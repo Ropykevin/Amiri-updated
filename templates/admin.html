@@ -1,0 +1,610 @@
+{% extends "admin_base.html" %}
+{% block title %}Admin workspace | Amiri Insurance{% endblock %}
+{% block body_class %}admin-app{% endblock %}
+{% block extra_head %}
+  <link href="/static/css/admin.css?v=modern2" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+<div class="admin-shell">
+  <aside class="admin-side">
+    <a class="admin-brand" href="/">
+      <img src="/static/img/icon/icon-02-light.png" alt="Amiri" />
+      <span>
+        <strong>Amiri</strong>
+        <small>CRM</small>
+      </span>
+    </a>
+    <nav class="admin-nav">
+      <button type="button" data-tab="overview" class="active"><i class="fa-solid fa-gauge me-2"></i>Dashboard</button>
+      <button type="button" data-tab="leads"><i class="fa-solid fa-filter me-2"></i>Leads</button>
+      <button type="button" data-tab="accounts"><i class="fa-solid fa-building-user me-2"></i>Accounts</button>
+      <button type="button" data-tab="deals"><i class="fa-solid fa-handshake me-2"></i>Deals</button>
+      <button type="button" data-tab="invoices"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Invoices</button>
+      <button type="button" data-tab="content"><i class="fa-solid fa-newspaper me-2"></i>Insights</button>
+      <button type="button" data-tab="subscribers"><i class="fa-solid fa-envelope-open-text me-2"></i>Newsletter</button>
+      <button type="button" data-tab="users" id="usersNav"><i class="fa-solid fa-user-shield me-2"></i>Users</button>
+    </nav>
+    <div class="mt-4 px-2 small">
+      Signed in as <span id="adminUser">admin</span>
+    </div>
+    <div class="mt-3 d-grid gap-2">
+      <a class="btn btn-outline-light btn-sm" href="/">View site</a>
+      <form method="post" action="/logout" class="mb-0">
+        <button type="submit" class="btn btn-outline-light btn-sm w-100">Log out</button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-top">
+      <div>
+        <h1 id="adminTitle">Dashboard</h1>
+        <p id="adminLead">Target, revenue, clients, and staff share of the business.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-primary" id="newLeadBtn">New lead</button>
+        <button type="button" class="btn btn-outline-primary" id="newInvoiceBtn">New invoice</button>
+        <a class="btn btn-outline-primary" href="/admin/post">New insight</a>
+      </div>
+    </div>
+    <div id="adminError" class="alert alert-danger" style="display:none;"></div>
+
+    <section class="admin-section active" id="tab-overview">
+      <div class="stat-grid">
+        <div class="stat-card"><span>Target</span><strong id="statTarget">KES 10,000</strong></div>
+        <div class="stat-card"><span>Revenue</span><strong id="statMonthRevenue">KES 0</strong></div>
+        <div class="stat-card"><span>No. client</span><strong id="statClients">0</strong></div>
+        <div class="stat-card"><span>%</span><strong id="statPercent">0%</strong></div>
+      </div>
+      <div class="crm-split">
+        <div class="panel-card">
+          <h5 class="mb-3">Am revenue monthly</h5>
+          <canvas id="staffPie" height="220"></canvas>
+        </div>
+        <div class="panel-card">
+          <h5 class="mb-2">Target — <span id="statBenchmark">10,000</span> benchmark</h5>
+          <p class="text-muted small mb-3">Monthly revenue against the target line.</p>
+          <canvas id="monthBars" height="220"></canvas>
+          <form id="targetForm" class="d-flex gap-2 mt-3">
+            <input class="form-control" id="targetInput" type="number" min="1" step="1" placeholder="Monthly target" />
+            <button class="btn btn-outline-primary" type="submit">Set target</button>
+          </form>
+        </div>
+      </div>
+      <div class="crm-split">
+        <div class="panel-card">
+          <h5 class="mb-3">Monthly top</h5>
+          <canvas id="monthlyTop" height="220"></canvas>
+        </div>
+        <div class="panel-card">
+          <h5 class="mb-3">Percentage yearly</h5>
+          <canvas id="yearlyPct" height="220"></canvas>
+        </div>
+      </div>
+      <div class="panel-card">
+        <h5 class="mb-3">Renewals due</h5>
+        <div id="renewalsList"></div>
+      </div>
+    </section>
+
+    <section class="admin-section" id="tab-leads">
+      <div class="panel-card">
+        <div class="panel-toolbar">
+          <input class="form-control" id="leadSearch" placeholder="Search name, phone, email" />
+          <select class="form-select" id="leadStatus" style="max-width:180px">
+            <option value="all">All statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="quoted">Quoted</option>
+            <option value="won">Won</option>
+            <option value="closed">Closed</option>
+          </select>
+          <select class="form-select" id="leadService" style="max-width:200px">
+            <option value="all">All services</option>
+            <option value="medical">Medical</option>
+            <option value="motor">Motor</option>
+            <option value="wiba">WIBA</option>
+            <option value="property">Property</option>
+            <option value="group_life">Group Life</option>
+            <option value="money">Money</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Type</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="leadsBody"></tbody>
+          </table>
+        </div>
+        <p id="leadsEmpty" class="text-muted text-center py-4 mb-0">No leads yet. Website quotes appear here.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" id="tab-accounts">
+      <div class="panel-card">
+        <div class="panel-toolbar">
+          <input class="form-control" id="accountSearch" placeholder="Search accounts" />
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Mobile</th>
+                <th>PIN</th>
+                <th>Deals</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="accountsBody"></tbody>
+          </table>
+        </div>
+        <p id="accountsEmpty" class="text-muted text-center py-4 mb-0">Accounts appear when a lead is contacted.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" id="tab-deals">
+      <div class="panel-card">
+        <div class="panel-toolbar">
+          <input class="form-control" id="dealSearch" placeholder="Search deals" />
+          <select class="form-select" id="dealService" style="max-width:200px">
+            <option value="all">All services</option>
+            <option value="medical">Medical</option>
+            <option value="motor">Motor</option>
+            <option value="wiba">WIBA</option>
+            <option value="property">Property</option>
+            <option value="group_life">Group Life</option>
+            <option value="money">Money</option>
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Premium</th>
+                <th>Paid</th>
+                <th>Renews</th>
+                <th>Owner</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="dealsBody"></tbody>
+          </table>
+        </div>
+        <p id="dealsEmpty" class="text-muted text-center py-4 mb-0">Deals appear when a lead is marked sold.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" id="tab-invoices">
+      <div class="crm-split">
+        <div class="panel-card">
+          <h5 class="mb-2">Pay to</h5>
+          <p class="text-muted small mb-3">Shown on every invoice and in the email you send.</p>
+          <div id="invoicePayTo"></div>
+        </div>
+        <div class="panel-card">
+          <h5 class="mb-2">Create an invoice</h5>
+          <p class="text-muted small mb-3">Bill a client and include KCB account details for payment.</p>
+          <button type="button" class="btn btn-primary" id="newInvoiceTabBtn">New invoice</button>
+        </div>
+      </div>
+      <div class="panel-card">
+        <div class="panel-toolbar">
+          <input class="form-control" id="invoiceSearch" placeholder="Search client, number, service" />
+          <select class="form-select" id="invoiceStatus" style="max-width:180px">
+            <option value="all">All statuses</option>
+            <option value="unpaid">Unpaid</option>
+            <option value="paid">Paid</option>
+            <option value="void">Void</option>
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>Client</th>
+                <th>Cover</th>
+                <th>Amount</th>
+                <th>Due</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="invoicesBody"></tbody>
+          </table>
+        </div>
+        <p id="invoicesEmpty" class="text-muted text-center py-4 mb-0">No invoices yet. Create one to bill a client.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" id="tab-content">
+      <div class="panel-card">
+        <div class="panel-toolbar">
+          <input class="form-control" id="postSearch" placeholder="Search posts" />
+          <select class="form-select" id="postStatus" style="max-width:180px">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+          <a class="btn btn-primary" href="/admin/post">Write post</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="postsBody"></tbody>
+          </table>
+        </div>
+        <p id="postsEmpty" class="text-muted text-center py-4 mb-0">No posts yet.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" id="tab-users">
+      <div class="panel-card mb-4">
+        <h5 class="mb-3">Add a user</h5>
+        <p class="text-muted">They can sign in and manage quotes, clients, and insights. Admins can also add other users.</p>
+        <form id="userForm" class="row g-3">
+          <div class="col-md-4"><input class="form-control" id="userName" placeholder="Full name" required /></div>
+          <div class="col-md-4"><input class="form-control" id="userUsername" placeholder="Username" required /></div>
+          <div class="col-md-4"><input class="form-control" id="userEmail" type="email" placeholder="Email" /></div>
+          <div class="col-md-4"><input class="form-control" id="userPassword" type="password" placeholder="Password (12+ characters)" minlength="12" required /></div>
+          <div class="col-md-4">
+            <select class="form-select" id="userRole">
+              <option value="manager">Manager</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="col-md-4"><button class="btn btn-primary w-100" type="submit">Add user</button></div>
+        </form>
+        <p id="userFormStatus" class="mt-3 mb-0"></p>
+      </div>
+      <div class="panel-card">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+        </div>
+        <p id="usersEmpty" class="text-muted text-center py-4 mb-0">No users yet.</p>
+      </div>
+    </section>
+
+    <section class="admin-section" id="tab-subscribers">
+      <div class="panel-card">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="subscribersBody"></tbody>
+          </table>
+        </div>
+        <p id="subscribersEmpty" class="text-muted text-center py-4 mb-0">No newsletter subscribers yet.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="modal fade" id="crmModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="crmTitle">Lead</h5>
+          <small class="text-muted" id="crmMeta"></small>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="crmForm" class="row g-3">
+          <input type="hidden" id="crmKind" />
+          <input type="hidden" id="crmId" />
+          <div class="col-md-6">
+            <label class="form-label">Client name</label>
+            <input class="form-control" id="crmName" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Staff owner</label>
+            <select class="form-select" id="crmOwner"></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Phone</label>
+            <input class="form-control" id="crmMobile" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input class="form-control" id="crmEmail" type="email" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">KRA PIN</label>
+            <input class="form-control" id="crmPin" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Service</label>
+            <select class="form-select" id="crmService">
+              <option value="medical">Medical</option>
+              <option value="motor">Motor</option>
+              <option value="wiba">WIBA</option>
+              <option value="property">Property</option>
+              <option value="group_life">Group Life</option>
+              <option value="money">Money</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Client type</label>
+            <select class="form-select" id="crmClientType">
+              <option value="individual">Individual</option>
+              <option value="corporate">Corporate</option>
+            </select>
+          </div>
+          <div class="col-md-4" id="crmStatusWrap">
+            <label class="form-label">Status</label>
+            <select class="form-select" id="crmStatus">
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="quoted">Quoted</option>
+              <option value="won">Sold / won</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+          <div class="col-md-4 crm-deal-only">
+            <label class="form-label">Insurer</label>
+            <select class="form-select" id="crmInsurer">
+              <option value="">Select</option>
+              <option>Britam</option>
+              <option>CIC</option>
+              <option>Jubilee</option>
+              <option>ICEA LION</option>
+              <option>APA</option>
+              <option>GA Insurance</option>
+              <option>Kenya Alliance</option>
+              <option>MUA</option>
+              <option>Geminia</option>
+              <option>Heritage</option>
+              <option>Cigna</option>
+              <option>Allianz Global Health</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Premium (KES)</label>
+            <input class="form-control" id="crmPremium" type="number" min="0" step="1" />
+          </div>
+          <div class="col-md-4 crm-deal-only">
+            <label class="form-label">Inception</label>
+            <input class="form-control" id="crmInception" type="date" />
+          </div>
+          <div class="col-md-4 crm-deal-only">
+            <label class="form-label">Expiry / renewal</label>
+            <input class="form-control" id="crmExpiry" type="date" />
+          </div>
+
+          <div class="col-12 crm-medical">
+            <hr class="mt-1 mb-2" />
+            <strong>Medical</strong>
+          </div>
+          <div class="col-md-4 crm-medical crm-individual">
+            <label class="form-label">Date of birth</label>
+            <input class="form-control" id="crmDob" type="date" />
+          </div>
+          <div class="col-md-4 crm-medical crm-corporate">
+            <label class="form-label">Population</label>
+            <input class="form-control" id="crmMedPop" />
+          </div>
+          <div class="col-md-4 crm-medical crm-corporate">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="crmCategory">
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </div>
+          <div class="col-md-4 crm-medical"><label class="form-label">Inpatient limit</label><input class="form-control" id="limIn" /></div>
+          <div class="col-md-4 crm-medical"><label class="form-label">Outpatient limit</label><input class="form-control" id="limOut" /></div>
+          <div class="col-md-4 crm-medical"><label class="form-label">Dental</label><input class="form-control" id="limDental" /></div>
+          <div class="col-md-4 crm-medical"><label class="form-label">Optical</label><input class="form-control" id="limOptical" /></div>
+          <div class="col-md-4 crm-medical"><label class="form-label">Maternity</label><input class="form-control" id="limMaternity" /></div>
+
+          <div class="col-12 crm-wiba">
+            <hr class="mt-1 mb-2" />
+            <strong>WIBA</strong>
+          </div>
+          <div class="col-md-6 crm-wiba"><label class="form-label">Population</label><input class="form-control" id="crmWibaPop" /></div>
+          <div class="col-md-6 crm-wiba"><label class="form-label">Cover amount</label><input class="form-control" id="crmWibaAmount" /></div>
+
+          <div class="col-12 crm-motor">
+            <hr class="mt-1 mb-2" />
+            <strong>Motor</strong>
+          </div>
+          <div class="col-md-4 crm-motor"><label class="form-label">Registration</label><input class="form-control" id="vehReg" /></div>
+          <div class="col-md-4 crm-motor"><label class="form-label">Make</label><input class="form-control" id="vehMake" /></div>
+          <div class="col-md-4 crm-motor"><label class="form-label">Model</label><input class="form-control" id="vehModel" /></div>
+          <div class="col-md-4 crm-motor"><label class="form-label">Year</label><input class="form-control" id="vehYear" /></div>
+          <div class="col-md-4 crm-motor"><label class="form-label">Chassis</label><input class="form-control" id="vehChassis" /></div>
+          <div class="col-md-4 crm-motor"><label class="form-label">Value of car</label><input class="form-control" id="vehValue" /></div>
+          <div class="col-md-6 crm-motor">
+            <div class="form-check mt-4">
+              <input class="form-check-input" type="checkbox" id="crmInstallment" />
+              <label class="form-check-label" for="crmInstallment">Pays in instalments</label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" id="crmNotes" rows="2"></textarea>
+          </div>
+        </form>
+
+        <div id="crmFilesWrap" class="mt-4" style="display:none;">
+          <h6>Documents</h6>
+          <p class="text-muted small mb-2" id="crmFilesHint"></p>
+          <div id="crmFileList" class="mb-2"></div>
+          <div class="row g-2">
+            <div class="col-md-4">
+              <select class="form-select" id="crmFileKind"></select>
+            </div>
+            <div class="col-md-5">
+              <input class="form-control" type="file" id="crmFileInput" accept=".pdf,.jpg,.jpeg,.png,.webp" />
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-primary w-100" id="crmUploadBtn">Upload</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="crmPayWrap" class="mt-4" style="display:none;">
+          <h6>Payments</h6>
+          <div id="crmPayList" class="mb-2"></div>
+          <div class="row g-2">
+            <div class="col-md-3">
+              <select class="form-select" id="payMethod">
+                <option value="mpesa">M-Pesa</option>
+                <option value="cheque">Cheque</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="payCode" placeholder="M-Pesa code" />
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="payAmount" type="number" min="1" placeholder="Amount" />
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-success w-100" id="crmPayBtn">Add payment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="crmSave">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="invoiceModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="invTitle">New invoice</h5>
+          <small class="text-muted" id="invMeta">KCB account details are added automatically.</small>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="invoiceForm" class="row g-3">
+          <input type="hidden" id="invId" />
+          <div class="col-md-6">
+            <label class="form-label">Existing account</label>
+            <select class="form-select" id="invAccount">
+              <option value="">Walk-in / new client</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Status</label>
+            <select class="form-select" id="invStatus">
+              <option value="unpaid">Unpaid</option>
+              <option value="paid">Paid</option>
+              <option value="void">Void</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Client name</label>
+            <input class="form-control" id="invName" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input class="form-control" id="invMobile" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input class="form-control" id="invEmail" type="email" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Client type</label>
+            <select class="form-select" id="invClientType">
+              <option value="individual">Individual</option>
+              <option value="corporate">Corporate</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Service</label>
+            <select class="form-select" id="invService">
+              <option value="medical">Medical</option>
+              <option value="motor">Motor</option>
+              <option value="wiba">WIBA</option>
+              <option value="property">Property</option>
+              <option value="group_life">Group Life</option>
+              <option value="money">Money</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <input class="form-control" id="invDescription" placeholder="Cover / policy details" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Amount (KES)</label>
+            <input class="form-control" id="invAmount" type="number" min="1" step="1" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Due date</label>
+            <input class="form-control" id="invDue" type="date" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" id="invNotes" rows="2"></textarea>
+          </div>
+        </form>
+        <div class="mt-4" id="invPayPreview"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-primary" id="invEmailBtn" style="display:none;">Email invoice</button>
+        <button type="button" class="btn btn-primary" id="invSave">Save invoice</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="/static/js/admin-session.js"></script>
+<script src="/static/js/admin.js?v=crm4"></script>
+<script src="/static/js/crm.js?v=7"></script>
+{% endblock %}

@@ -1,0 +1,488 @@
+/* Improvements CSS for Amiri Insurance Website */
+
+/* Image Optimization */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Focus styles for accessibility */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Improved color contrast for primary buttons */
+.btn-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #004085;
+    border-color: #004085;
+}
+
+/* Smooth transitions */
+.btn,
+.card,
+.navbar-nav .nav-link {
+    transition: all 0.3s ease;
+}
+
+/* Mobile responsiveness improvements */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .display-5 {
+        font-size: 1.75rem;
+    }
+
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+}
+
+/* Loading animations */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Improved form styling */
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Hover effects */
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Carousel control improvements */
+.carousel-control-prev,
+.carousel-control-next {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Print styles */
+@media print {
+
+    .navbar,
+    .footer,
+    .back-to-top,
+    .social-sharing {
+        display: none !important;
+    }
+
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+}
+
+/* Text readability improvements */
+p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+/* Testimonial improvements */
+.testimonial-item {
+    transition: transform 0.3s ease;
+}
+
+.testimonial-item:hover {
+    transform: scale(1.02);
+}
+
+/* Newsletter form improvements */
+#mc-embedded-subscribe-form {
+    position: relative;
+}
+
+#mc-embedded-subscribe-form .btn {
+    transition: all 0.3s ease;
+}
+
+#mc-embedded-subscribe-form .btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Blog-specific styles */
+.article-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.article-content h2 {
+    color: #007bff;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+}
+
+.article-content .lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: #6c757d;
+}
+
+.social-sharing {
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 0;
+}
+
+.social-sharing .btn {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+}
+
+.call-to-action {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left: 4px solid #007bff;
+}
+
+.article-tags .badge {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.article-tags .badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.sidebar .card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 600;
+}
+
+.sidebar .list-unstyled li a {
+    color: #495057;
+    transition: color 0.3s ease;
+}
+
+.sidebar .list-unstyled li a:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Author info card */
+.sidebar .card img {
+    border: 3px solid #e9ecef;
+}
+
+/* Responsive blog layout */
+@media (max-width: 768px) {
+    .article-content {
+        font-size: 1rem;
+    }
+
+    .social-sharing {
+        text-align: center;
+    }
+
+    .social-sharing .btn {
+        margin-bottom: 0.5rem;
+    }
+
+    .sidebar {
+        margin-top: 2rem;
+    }
+}
+
+/* Breadcrumb improvements */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">";
+    color: #6c757d;
+}
+
+.breadcrumb-item a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+/* Article metadata styling */
+.text-muted i {
+    color: #6c757d;
+}
+
+/* Enhanced typography for blog content */
+.article-content blockquote {
+    border-left: 4px solid #007bff;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #6c757d;
+}
+
+.article-content ul,
+.article-content ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.article-content li {
+    margin-bottom: 0.5rem;
+}
+
+/* Improved spacing for blog elements */
+.article-content>*:last-child {
+    margin-bottom: 0;
+}
+
+/* Tag cloud styling */
+.article-tags {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1.5rem;
+}
+
+/* Call to action enhancements */
+.call-to-action .btn {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .call-to-action .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Blog listing specific styles */
+.blog-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.blog-card.featured {
+    border-left: 4px solid #007bff;
+}
+
+.blog-card .card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.blog-card .card-title a {
+    color: #212529;
+    transition: color 0.3s ease;
+}
+
+.blog-card .card-title a:hover {
+    color: #007bff;
+}
+
+.blog-tags .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.blog-tags .badge:hover {
+    transform: translateY(-1px);
+}
+
+/* Featured blog post styling */
+.blog-card.featured .card-body {
+    padding: 1.5rem;
+}
+
+.blog-card.featured .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Pagination styling */
+.pagination .page-link {
+    color: #007bff;
+    border-color: #dee2e6;
+}
+
+.pagination .page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Search form styling */
+.sidebar .card form {
+    position: relative;
+}
+
+.sidebar .card form .btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Categories list styling */
+.sidebar .list-unstyled li {
+    border-bottom: 1px solid #f8f9fa;
+    padding: 0.5rem 0;
+}
+
+.sidebar .list-unstyled li:last-child {
+    border-bottom: none;
+}
+
+.sidebar .list-unstyled li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+}
+
+/* Recent posts styling */
+.sidebar .d-flex img {
+    border-radius: 4px;
+}
+
+.sidebar .d-flex h6 a {
+    color: #495057;
+    font-size: 0.875rem;
+    line-height: 1.3;
+}
+
+.sidebar .d-flex h6 a:hover {
+    color: #007bff;
+}
+
+/* Tags cloud styling */
+.sidebar .d-flex.flex-wrap {
+    gap: 0.5rem;
+}
+
+.sidebar .badge {
+    transition: all 0.3s ease;
+}
+
+.sidebar .badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Newsletter card styling */
+.sidebar .card.bg-primary {
+    border: none;
+}
+
+.sidebar .card.bg-primary form {
+    margin-top: 1rem;
+}
+
+.sidebar .card.bg-primary .btn-light {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #007bff;
+}
+
+.sidebar .card.bg-primary .btn-light:hover {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+/* Responsive blog listing */
+@media (max-width: 768px) {
+    .blog-card.featured .row {
+        flex-direction: column;
+    }
+
+    .blog-card.featured .col-md-4 {
+        height: 200px;
+    }
+
+    .blog-card.featured .col-md-8 {
+        padding: 1rem;
+    }
+
+    .sidebar {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .blog-card .card-body {
+        padding: 1rem;
+    }
+
+    .blog-tags {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .blog-tags .badge {
+        margin-bottom: 0.25rem;
+    }
+}

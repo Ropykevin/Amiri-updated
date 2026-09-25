@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 56" role="img" aria-label="MUA">
+  <title>MUA</title>
+  <g transform="translate(28 28)" fill="#F15A22">
+    <path d="M0-8.2 11.2-27.4C5.6-33.6-5.6-33.6-11.2-27.4Z"/>
+    <path d="M8.2 0 27.4-11.2C33.6-5.6 33.6 5.6 27.4 11.2Z"/>
+    <path d="M0 8.2-11.2 27.4C-5.6 33.6 5.6 33.6 11.2 27.4Z"/>
+    <path d="M-8.2 0-27.4 11.2C-33.6 5.6-33.6-5.6-27.4-11.2Z"/>
+  </g>
+  <text x="64" y="38" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800" fill="#1A1A1A" letter-spacing="1.2">MUA</text>
+</svg>

@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+{% set active = "insights" %}
+{% block title %}Blog - Amiri Insurance Agency{% endblock %}
+{% block description %}Explore our collection of insurance and financial planning articles. Stay informed with expert insights from Amiri Insurance Agency.{% endblock %}
+{% block extra_head %}
+  <meta name="keywords"
+        content="Amiri Insurance blog, insurance articles, financial planning blog, Kenya insurance blog" />
+  <link rel="stylesheet" href="/static/css/styles2.css" />
+  <link rel="stylesheet" href="/static/css/improvements.css" />
+  <style>
+        .blog-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .blog-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(13, 110, 253, 0.9);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .blog-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .blog-excerpt {
+            color: #6c757d;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .search-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .filter-buttons .btn {
+            margin: 5px;
+            border-radius: 25px;
+        }
+
+        .pagination .page-link {
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .no-posts {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6c757d;
+        }
+
+        .post-count {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Insights</div>
+        <h1>Guides for clearer cover</h1>
+        <p>Practical reading on health, motor, property, and planning for Kenyan households and businesses.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Blog</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <div class="container my-5">
+      <div class="search-box">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div class="input-group">
+              <input type="text" class="form-control" id="searchInput" placeholder="Search blog posts...">
+              <button class="btn btn-primary" type="button" id="searchBtn">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <a href="/admin/login" class="btn btn-success">
+              <i class="fas fa-plus me-2"></i>Write a Blog Post
+            </a>
+          </div>
+        </div>
+        <div class="filter-buttons mt-4">
+          <span class="me-3 text-muted">Filter by category:</span>
+          <button class="btn btn-outline-primary btn-sm filter-btn active" data-category="all">All</button>
+          <button class="btn btn-outline-primary btn-sm filter-btn" data-category="Health Insurance">Health Insurance</button>
+          <button class="btn btn-outline-primary btn-sm filter-btn" data-category="Life Insurance">Life Insurance</button>
+          <button class="btn btn-outline-primary btn-sm filter-btn" data-category="Property Insurance">Property Insurance</button>
+          <button class="btn btn-outline-primary btn-sm filter-btn" data-category="Vehicle Insurance">Vehicle Insurance</button>
+          <button class="btn btn-outline-primary btn-sm filter-btn" data-category="Corporate Insurance">Corporate Insurance</button>
+          <button class="btn btn-outline-primary btn-sm filter-btn" data-category="Financial Planning">Financial Planning</button>
+          <button class="btn btn-outline-primary btn-sm filter-btn" data-category="Risk Management">Risk Management</button>
+        </div>
+      </div>
+      <div class="post-count mb-4">
+        <span id="postCount">Showing 0 posts</span>
+      </div>
+      <div class="row" id="blogPostsContainer"></div>
+      <div id="noPosts" class="no-posts" style="display: none;">
+        <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+        <h4>No blog posts found</h4>
+        <p>Try adjusting your search terms or filters.</p>
+      </div>
+    </div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="/static/js/improvements.js"></script>
+<script>
+        let blogPosts = [];
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        // Load blog posts from JSON file
+        function loadBlogPosts() {
+            fetch('/api/posts')
+                .then(response => response.json())
+                .then(data => {
+                    blogPosts = data.filter(post => post.status === 'published');
+                    renderBlogPosts();
+                })
+                .catch(error => {
+                    console.error('Error loading blog posts:', error);
+                    blogPosts = [];
+                    renderBlogPosts();
+                });
+        }
+
+        function escapeHtml(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // Render blog posts
+        function renderBlogPosts() {
+            const container = document.getElementById('blogPostsContainer');
+
+            if (blogPosts.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="no-posts">
+                            <i class="fas fa-newspaper fa-3x mb-3 text-muted"></i>
+                            <h4>No blog posts available</h4>
+                            <p class="text-muted">Check back soon for new articles!</p>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('postCount').textContent = 'Showing 0 posts';
+                return;
+            }
+
+            container.innerHTML = blogPosts.map(post => `
+                <div class="col-lg-4 col-md-6 mb-4 blog-post" data-category="${escapeHtml(post.category)}">
+                    <div class="card blog-card h-100">
+                        <div class="position-relative">
+                            <img src="${escapeHtml(post.image || '/static/img/default-blog.jpg')}" class="card-img-top blog-image" 
+                                 alt="${escapeHtml(post.title)}" onerror="this.src='https://via.placeholder.com/400x200?text=Blog+Post'">
+                            <div class="blog-category">${escapeHtml(post.category)}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="blog-date mb-2">
+                                <i class="far fa-calendar-alt me-2"></i>${new Date(post.publishDate).toLocaleDateString()}
+                                <i class="far fa-user ms-3 me-2"></i>${escapeHtml(post.author)}
+                            </div>
+                            <h5 class="card-title">${escapeHtml(post.title)}</h5>
+                            <p class="card-text blog-excerpt">
+                                ${escapeHtml(post.excerpt || '')}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <a href="/insights/post?id=${post.id}" class="btn btn-outline-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('postCount').textContent = `Showing ${blogPosts.length} posts`;
+            filterPosts();
+        }
+
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', function () {
+            currentSearch = document.getElementById('searchInput').value.toLowerCase();
+            filterPosts();
+        });
+
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                currentSearch = this.value.toLowerCase();
+                filterPosts();
+            }
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                currentFilter = this.getAttribute('data-category');
+                filterPosts();
+            });
+        });
+
+        function filterPosts() {
+            const posts = document.querySelectorAll('.blog-post');
+            let visibleCount = 0;
+
+            posts.forEach(post => {
+                const category = post.getAttribute('data-category');
+                const title = post.querySelector('.card-title').textContent.toLowerCase();
+                const excerpt = post.querySelector('.blog-excerpt').textContent.toLowerCase();
+
+                const matchesFilter = currentFilter === 'all' || category === currentFilter;
+                const matchesSearch = currentSearch === '' ||
+                    title.includes(currentSearch) ||
+                    excerpt.includes(currentSearch);
+
+                if (matchesFilter && matchesSearch) {
+                    post.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+
+            // Update post count
+            document.getElementById('postCount').textContent = `Showing ${visibleCount} posts`;
+
+            // Show/hide no posts message
+            const noPostsDiv = document.getElementById('noPosts');
+            if (visibleCount === 0) {
+                noPostsDiv.style.display = 'block';
+            } else {
+                noPostsDiv.style.display = 'none';
+            }
+        }
+
+        // Initialize
+        loadBlogPosts();
+    </script>
+{% endblock %}

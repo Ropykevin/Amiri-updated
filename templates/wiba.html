@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "wiba" %}
+{% block title %}WIBA Insurance | Amiri Insurance{% endblock %}
+{% block description %}Work Injury Benefits Act insurance for Kenyan employers.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>WIBA</h1>
+        <p>Statutory work injury cover for staff injured in the course of duty.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/cover">Cover</a></li>
+            <li class="breadcrumb-item active">WIBA</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-5 align-items-start">
+          <div class="col-lg-6">
+            <div class="product-hero-img">
+              <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80" alt="Work Injury Benefits (WIBA)" />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="section-kicker">Cover</div>
+            <h2 class="section-title">Work Injury Benefits (WIBA)</h2>
+            <p>WIBA covers employees for injuries sustained while at work. Compensation follows a defined scale of benefits depending on the injury.</p><p>Every employer is required by the Act to maintain an approved insurance policy for liability to employees — including domestic workers such as housekeepers, guards, and drivers.</p><p>Cover can include medical care, rehabilitation, lost wages, and death benefits, with benefits of up to 8 years’ salary for permanent disability, 1 year’s salary for temporary disability, and medical expenses up to KSh 100,000.</p>
+            <ul class="benefit-list"><li>Medical care and rehabilitation</li><li>Lost wages during recovery</li><li>Death benefits for dependants</li><li>Includes domestic workers</li></ul>
+            
+            <button type="button" class="btn btn-primary mt-4" data-quote-open data-quote-cover="WIBA" data-bs-toggle="modal" data-bs-target="#quoteModal">Get this cover</button>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

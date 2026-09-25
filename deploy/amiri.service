@@ -1,0 +1,21 @@
+[Unit]
+Description=Amiri Insurance Flask app
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/amiri
+EnvironmentFile=/var/www/amiri/.env
+Environment=APP_ENV=production
+Environment=FLASK_DEBUG=0
+Environment=GUNICORN_BIND=127.0.0.1:8000
+ExecStart=/var/www/amiri/venv/bin/gunicorn -c gunicorn.conf.py wsgi:app
+Restart=always
+RestartSec=5
+KillMode=mixed
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

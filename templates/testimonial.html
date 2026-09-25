@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% set active = "about" %}
+{% block title %}Testimonials | Amiri Insurance{% endblock %}
+{% block description %}What clients say about Amiri Insurance Agency.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Words from clients.</h1>
+        <p>People we have walked with — from first quote to claim.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/about">About</a></li>
+            <li class="breadcrumb-item active">Testimonials</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4"><div class="quote-block"><div class="stars">★★★★★</div><p>“Amiri provided exceptional service, guiding me through every step. Professional and stress-free.”</p><div class="who"><img src="/static/img/testimonial-1.jpg" alt="Sarah Mutheu" /><div><strong>Sarah Mutheu</strong><span>Small business owner</span></div></div></div></div>
+          <div class="col-lg-4"><div class="quote-block"><div class="stars">★★★★★</div><p>“Tailored coverage that fit my needs. Responsive, professional, and seamless from start to finish.”</p><div class="who"><img src="/static/img/testimonial-2.jpg" alt="David Kimani" /><div><strong>David Kimani</strong><span>Financial analyst</span></div></div></div></div>
+          <div class="col-lg-4"><div class="quote-block"><div class="stars">★★★★★</div><p>“Reliable, and always going above and beyond. Highly recommended for anyone who wants the right cover.”</p><div class="who"><img src="/static/img/mike.jpg" alt="Michael Kiprop" /><div><strong>Michael Kiprop</strong><span>IT consultant</span></div></div></div></div>
+          <div class="col-lg-8"><div class="quote-block"><div class="stars">★★★★★</div><p>“As an event planner, cover for goods in transit and WIBA is essential. They thought of everything. I can focus on creating events, knowing I’m well covered.”</p><div class="who"><img src="/static/img/eva.jpg" alt="Eva James" /><div><strong>Eva James</strong><span>Wedding &amp; event planner</span></div></div></div></div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

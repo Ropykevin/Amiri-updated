@@ -1,0 +1,94 @@
+{
+    "@context": "https://schema.org",
+    "@type": "InsuranceAgency",
+    "name": "Amiri Insurance Agency",
+    "description": "Kenya's trusted insurance partner since 2017. Comprehensive coverage for health, vehicle, property, life, and business insurance.",
+    "url": "https://amiriinsuranceagency.com",
+    "logo": "https://amiriinsuranceagency.com/img/icon/icon-02-primary.png",
+    "foundingDate": "2017",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Utalii Hse, 3th Floor, Wing B, Utalii Lane",
+        "addressLocality": "Nairobi",
+        "addressCountry": "Kenya"
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+254713193568",
+        "contactType": "customer service",
+        "availableLanguage": "English"
+    },
+    "email": "info@amiriinsuranceagency.com",
+    "openingHours": "Mo-Fr 09:00-21:00",
+    "areaServed": {
+        "@type": "Country",
+        "name": "Kenya"
+    },
+    "serviceArea": {
+        "@type": "Country",
+        "name": "Kenya"
+    },
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Insurance Services",
+        "itemListElement": [
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Health Insurance",
+                    "description": "Customized medical packages aligned with WHO standards"
+                }
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Vehicle Insurance",
+                    "description": "Comprehensive vehicle insurance coverage"
+                }
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Property Insurance",
+                    "description": "Home and business property insurance coverage"
+                }
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Life Insurance",
+                    "description": "Group life insurance plans for employees"
+                }
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Money Insurance",
+                    "description": "Business money insurance for cash protection"
+                }
+            },
+            {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "WIBA Insurance",
+                    "description": "Work Injury Benefit Act insurance coverage"
+                }
+            }
+        ]
+    },
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "50000"
+    },
+    "sameAs": [
+        "https://www.facebook.com/amiriinsurance/",
+        "https://www.linkedin.com/company/104630355/"
+    ]
+}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "cover" %}
+{% block title %}Our Services | Amiri Insurance{% endblock %}
+{% block description %}Health, motor, property, group life, WIBA, and money insurance from Amiri.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Cover that fits real life.</h1>
+        <p>Health, motor, property, life, WIBA, and money — chosen for Kenyan families and businesses.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Cover</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="cover-grid">
+          <a class="cover-card" href="/health">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&w=800&q=80" alt="Health Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Health Insurance</h3>
+              <p>Custom medical packages for families and workforces, aligned to quality care standards.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/motor">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80" alt="Motor Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Motor Insurance</h3>
+              <p>Comprehensive and third-party protection for private and commercial vehicles.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/property">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80" alt="Property Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Property Insurance</h3>
+              <p>Fire, burglary, and asset cover for homes and commercial premises.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/group-life">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Group Life" /></div>
+            <div class="cover-card-body">
+              <h3>Group Life</h3>
+              <p>Protection for employees and their families when the unexpected happens.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/wiba">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80" alt="WIBA" /></div>
+            <div class="cover-card-body">
+              <h3>WIBA</h3>
+              <p>Statutory work injury cover for staff injured in the course of duty.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/money">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=800&q=80" alt="Money Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Money Insurance</h3>
+              <p>Secure cash on site and in transit from theft, fraud, and loss.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+        <div class="cta-band mt-5 d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+          <div><h2 class="mb-2">Not sure which policy you need?</h2><p class="mb-0">Tell us about your household or business. We will recommend a mix.</p></div>
+          <button type="button" class="btn btn-gold" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Get a quote</button>
+        </div>
+      </div>
+    </section>
+{% endblock %}

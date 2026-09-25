@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% set active = "" %}
+{% block title %}Page not found | Amiri Insurance{% endblock %}
+{% block description %}The page you requested could not be found.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>This page has wandered off.</h1>
+        <p>The cover you wanted is not here — let’s get you back to safety.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">404</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section text-center">
+      <div class="container">
+        <a href="/" class="btn btn-primary">Back home</a>
+        <a href="/contact" class="btn btn-outline-navy">Contact us</a>
+      </div>
+    </section>
+{% endblock %}

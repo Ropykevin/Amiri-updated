@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+{% set active = "home" %}
+{% block title %}Amiri Insurance — Kenya's Trusted Insurance Partner{% endblock %}
+{% block description %}Amiri Insurance Agency - Kenya's trusted insurance partner since 2017. Comprehensive coverage for health, vehicle, property, life, and business insurance. Get your free quote today!{% endblock %}
+{% block extra_head %}
+  <meta name="keywords"
+    content="Amiri Insurance, Kenya insurance, health insurance, vehicle insurance, property insurance, life insurance, business insurance, money insurance, WIBA insurance, Nairobi insurance agency" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://amiriinsuranceagency.com/" />
+  <meta property="og:title" content="Amiri Insurance - Kenya's Trusted Insurance Partner" />
+  <meta property="og:description"
+    content="Comprehensive insurance solutions for individuals and businesses in Kenya. Health, vehicle, property, life, and business insurance coverage." />
+  <meta property="og:image" content="https://amiriinsuranceagency.com/img/icon/icon-02-primary.png" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://amiriinsuranceagency.com/" />
+  <meta property="twitter:title" content="Amiri Insurance - Kenya's Trusted Insurance Partner" />
+  <meta property="twitter:description"
+    content="Comprehensive insurance solutions for individuals and businesses in Kenya." />
+  <meta property="twitter:image" content="https://amiriinsuranceagency.com/img/icon/icon-02-primary.png" />
+  <link rel="canonical" href="https://amiriinsuranceagency.com/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "InsuranceAgency",
+    "name": "Amiri Insurance Agency",
+    "description": "Kenya's trusted insurance partner since 2017. Comprehensive coverage for health, vehicle, property, life, and business insurance.",
+    "url": "https://amiriinsuranceagency.com",
+    "logo": "https://amiriinsuranceagency.com/img/icon/icon-02-primary.png",
+    "foundingDate": "2017",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Utalii Hse, 3rd Floor, Wing B, Utalii Lane",
+      "addressLocality": "Nairobi",
+      "addressCountry": "Kenya"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+254746158002",
+      "contactType": "customer service",
+      "availableLanguage": "English"
+    },
+    "email": "info@amiriinsuranceagency.com",
+    "openingHours": "Mo-Fr 09:00-21:00",
+    "areaServed": { "@type": "Country", "name": "Kenya" }
+  }
+  </script>
+{% endblock %}
+{% block content %}
+<section class="hero">
+      <div class="container position-relative" style="z-index: 1;">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-7">
+            <div class="hero-kicker"><i class="fa-solid fa-shield-halved"></i> Trusted in Kenya since 2017</div>
+            <h1>Protect what matters. <em>Simply.</em></h1>
+            <p class="lead mb-4">
+              Health, motor, property, life, and business cover — designed around Kenyan families and companies, with advice that is clear and claims support that stays close.
+            </p>
+            <div class="hero-points">
+              <span><i class="fa-solid fa-bolt"></i> Same-day quotes</span>
+              <span><i class="fa-solid fa-headset"></i> Hands-on claims help</span>
+              <span><i class="fa-solid fa-location-dot"></i> Nairobi office</span>
+            </div>
+            <div class="d-flex flex-wrap gap-3">
+              <button type="button" class="btn btn-gold" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Request a quote</button>
+              <a href="/cover" class="btn btn-ghost">Explore cover</a>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="quote-card">
+              <p class="quote-card-kicker">Free, no obligation</p>
+              <h3>Get a quote</h3>
+              <p class="mb-4">Tell us what you need. We reply the same day.</p>
+              <form data-amiri-form>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+                <div class="row g-3">
+                  <div class="col-12">
+                    <input class="form-control" id="gname" placeholder="Full name" required />
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" id="gmail" type="email" placeholder="Email" required />
+                  </div>
+                  <div class="col-md-6">
+                    <input class="form-control" id="cname" type="tel" placeholder="Mobile" required />
+                  </div>
+                  <div class="col-12">
+                    <select class="form-select" id="insuranceType" required>
+                      <option value="" selected disabled>Select cover</option>
+                      <option value="Health Insurance">Health Insurance</option>
+                      <option value="Motor Insurance">Motor Insurance</option>
+                      <option value="Property Insurance">Property Insurance</option>
+                      <option value="Group Life">Group Life</option>
+                      <option value="WIBA">WIBA</option>
+                      <option value="Money Insurance">Money Insurance</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" type="submit">Send request</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-3 col-6">
+            <div class="trust-item">
+              <div class="icon-orb"><i class="fa-solid fa-users"></i></div>
+              <div><strong>50,000+</strong><span>Clients served</span></div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="trust-item">
+              <div class="icon-orb"><i class="fa-solid fa-handshake"></i></div>
+              <div><strong>40,000+</strong><span>Insurer partners</span></div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="trust-item">
+              <div class="icon-orb"><i class="fa-solid fa-calendar-check"></i></div>
+              <div><strong>9 years</strong><span>In the market</span></div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="trust-item">
+              <div class="icon-orb"><i class="fa-solid fa-star"></i></div>
+              <div><strong>4.8/5</strong><span>Client rating</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section path-section">
+      <div class="container">
+        <div class="text-center mx-auto mb-5" style="max-width: 640px;">
+          <div class="section-kicker">How it works</div>
+          <h2 class="section-title">Cover in three clear steps</h2>
+        </div>
+        <div class="path-grid">
+          <div class="path-card">
+            <div class="path-num">01</div>
+            <h3>Tell us what you need</h3>
+            <p>A family medical plan, a car, a shop, or a full company programme — start with a short request.</p>
+          </div>
+          <div class="path-card">
+            <div class="path-num">02</div>
+            <h3>We compare the market</h3>
+            <p>Amiri shops trusted Kenyan insurers and explains the difference in plain language.</p>
+          </div>
+          <div class="path-card">
+            <div class="path-num">03</div>
+            <h3>You get cover that fits</h3>
+            <p>Documents, renewals, and claims stay with a team that already knows your file.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="row align-items-end mb-5">
+          <div class="col-lg-7">
+            <div class="section-kicker">Our cover</div>
+            <h2 class="section-title mb-0">Insurance for people, property, and businesses</h2>
+          </div>
+          <div class="col-lg-5">
+            <p class="mb-0">Six focused products, explained without jargon. Pick a policy, or let us recommend the right mix.</p>
+          </div>
+        </div>
+        <div class="cover-grid">
+          <a class="cover-card" href="/health">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&w=800&q=80" alt="Health Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Health Insurance</h3>
+              <p>Medical packages aligned to quality care standards, for families and workforces.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/motor">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80" alt="Motor Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Motor Insurance</h3>
+              <p>Comprehensive and third-party cover so you stay protected on Kenyan roads.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/property">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80" alt="Property Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Property Insurance</h3>
+              <p>Fire, burglary, and asset protection for homes and commercial premises.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/group-life">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Group Life" /></div>
+            <div class="cover-card-body">
+              <h3>Group Life</h3>
+              <p>Income protection and family support for employees when it matters most.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/wiba">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80" alt="WIBA" /></div>
+            <div class="cover-card-body">
+              <h3>WIBA</h3>
+              <p>Work Injury Benefits Act cover for staff injured in the course of duty.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+          <a class="cover-card" href="/money">
+            <div class="cover-photo"><img src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=800&q=80" alt="Money Insurance" /></div>
+            <div class="cover-card-body">
+              <h3>Money Insurance</h3>
+              <p>Protect cash on site and in transit from theft, fraud, and unexpected loss.</p>
+              <span class="more">View cover <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pt-0">
+      <div class="container">
+        <div class="why-panel">
+          <div class="row g-5 align-items-center">
+            <div class="col-lg-5">
+              <div class="section-kicker">Why Amiri</div>
+              <h2 class="section-title">Coverage that is easy to start, and easier to keep</h2>
+              <p>
+                We sit between you and the market — comparing options, explaining the fine print, and staying with you through claims. Integrity, transparency, respect, and teamwork guide every policy we place.
+              </p>
+              <a href="/about" class="btn btn-gold mt-2">Our story</a>
+            </div>
+            <div class="col-lg-7">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="reason">
+                    <div class="step-num">01</div>
+                    <h5>Clear advice</h5>
+                    <p>No maze of options. We match cover to your risk, budget, and life stage.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="reason">
+                    <div class="step-num">02</div>
+                    <h5>Fast placement</h5>
+                    <p>Quotes and policy documents move quickly so you are never left waiting.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="reason">
+                    <div class="step-num">03</div>
+                    <h5>Claims support</h5>
+                    <p>When something goes wrong, you speak to people who already know your file.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="reason">
+                    <div class="step-num">04</div>
+                    <h5>Fair pricing</h5>
+                    <p>We shop the market so you get strong cover without paying for noise.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pt-0">
+      <div class="container">
+        <div class="row g-5 align-items-center">
+          <div class="col-lg-6">
+            <div class="photo-frame">
+              <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80" alt="Insurance consultation" />
+              <div class="experience-badge">
+                <b>9</b>
+                Years of care
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="section-kicker">About the agency</div>
+            <h2 class="section-title">A Nairobi partner with national reach</h2>
+            <p>Founded in 2017, Amiri Insurance Agency has grown into a trusted advisor for more than 50,000 clients. We craft cover for individuals, families, and corporates — locally attuned, and connected across Kenya.</p>
+            <p>Our values are simple: integrity, transparency, respect, customer satisfaction, and teamwork. That is how we close the insurance gap and give people confidence in the future.</p>
+            <div class="row g-3 mt-2">
+              <div class="col-sm-6"><div class="contact-tile"><i class="fa-solid fa-layer-group"></i><h5 class="mb-1">Flexible plans</h5><p class="mb-0">Cover that flexes with your household or payroll.</p></div></div>
+              <div class="col-sm-6"><div class="contact-tile"><i class="fa-solid fa-headset"></i><h5 class="mb-1">Human service</h5><p class="mb-0">A real team in Utalii House, not a faceless portal.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-band">
+      <div class="container">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-5">
+            <h2 class="section-title">Built for households and boardrooms</h2>
+            <p class="mb-0">Personal cover for home and family, or a full programme for your business assets — we tailor the mix.</p>
+          </div>
+          <div class="col-lg-7">
+            <div class="row g-4 text-center text-lg-start">
+              <div class="col-4">
+                <div class="stat-num" data-toggle="counter-up">50000</div>
+                <p class="mb-0 mt-2">Happy clients</p>
+              </div>
+              <div class="col-4">
+                <div class="stat-num" data-toggle="counter-up">40000</div>
+                <p class="mb-0 mt-2">Partner network</p>
+              </div>
+              <div class="col-4">
+                <div class="stat-num" data-toggle="counter-up">9</div>
+                <p class="mb-0 mt-2">Years of service</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="text-center mx-auto mb-5" style="max-width: 620px;">
+          <div class="section-kicker">Testimonials</div>
+          <h2 class="section-title">People who sleep better because of Amiri</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="quote-block">
+              <div class="stars">★★★★★</div>
+              <p>“Amiri guided me through every step. Professional, calm, and genuinely interested in getting the cover right.”</p>
+              <div class="who">
+                <img src="/static/img/testimonial-1.jpg" alt="Sarah Mutheu" />
+                <div><strong>Sarah Mutheu</strong><span>Small business owner</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="quote-block">
+              <div class="stars">★★★★★</div>
+              <p>“Outstanding service and tailored coverage. The team was responsive and made the whole process seamless.”</p>
+              <div class="who">
+                <img src="/static/img/testimonial-2.jpg" alt="David Kimani" />
+                <div><strong>David Kimani</strong><span>Financial analyst</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="quote-block">
+              <div class="stars">★★★★★</div>
+              <p>“From goods in transit to WIBA, they thought of everything. I can focus on events knowing my team is covered.”</p>
+              <div class="who">
+                <img src="/static/img/eva.jpg" alt="Eva James" />
+                <div><strong>Eva James</strong><span>Wedding &amp; event planner</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pt-0">
+      <div class="container">
+        <div class="cta-band d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+          <div>
+            <h2 class="mb-2">Ready for a clearer policy?</h2>
+            <p class="mb-0">Book a conversation. We will map your risks and send a quote you can actually understand.</p>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-gold" data-quote-open data-bs-toggle="modal" data-bs-target="#quoteModal">Get a quote</button>
+            <a href="https://wa.me/254746158002" class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

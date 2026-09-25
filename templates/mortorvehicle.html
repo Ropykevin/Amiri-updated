@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active = "cover" %}
+{% set cover_page = "motor" %}
+{% block title %}Motor Insurance | Amiri Insurance{% endblock %}
+{% block description %}Comprehensive and third-party motor insurance in Kenya.{% endblock %}
+{% block content %}
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-kicker">Amiri Insurance</div>
+        <h1>Motor Insurance</h1>
+        <p>Comprehensive and third-party protection for private and commercial vehicles.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/cover">Cover</a></li>
+            <li class="breadcrumb-item active">Motor</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="row g-5 align-items-start">
+          <div class="col-lg-6">
+            <div class="product-hero-img">
+              <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80" alt="Motor Vehicle Insurance" />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="section-kicker">Cover</div>
+            <h2 class="section-title">Motor Vehicle Insurance</h2>
+            <p>Motor insurance protects you and your vehicle in the event of accidents, theft, or damage. Whether you drive a car, motorcycle, or commercial vehicle, cover includes repairs, medical expenses, and third-party liability.</p><p>At Amiri we offer flexible motor policies so you are back behind the wheel as quickly as possible.</p>
+            <ul class="benefit-list"><li>Comprehensive insurance</li><li>Third-party liability</li><li>Collision coverage</li><li>Personal injury protection</li></ul>
+            
+            <button type="button" class="btn btn-primary mt-4" data-quote-open data-quote-cover="Motor Insurance" data-bs-toggle="modal" data-bs-target="#quoteModal">Get this cover</button>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

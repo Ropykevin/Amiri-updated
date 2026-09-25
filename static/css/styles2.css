@@ -1,0 +1,169 @@
+.card {
+    margin: 20px 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+.card-img-top {
+    transition: transform 0.3s ease;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.carouselExample .carousel-item img {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.card-body {
+    display: flex;
+    /* Make the card body a flex container */
+    flex-direction: column;
+    /* Stack items vertically */
+    justify-content: space-between;
+    /* Space between title, text, and button */
+    text-align: center;
+    /* Center text */
+}
+
+.carouselExample .carousel-indicators button {
+    background-color: black;
+}
+
+.card-title {
+    color: #EC9428;
+}
+
+.about-img {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 30px;
+    overflow: hidden;
+}
+
+.about-img::before,
+.about-img::after {
+    content: "";
+    width: 100%;
+    border-radius: 10px;
+    position: absolute;
+    z-index: 1;
+}
+
+.about-img::before {
+    height: 40%;
+    background: var(--bs-dark);
+    top: 0;
+}
+
+.about-img::after {
+    height: 60%;
+    background: var(--bs-primary);
+    bottom: 0;
+}
+
+.rotate-left,
+.rotate-right {
+    width: 150px;
+    height: 100px;
+    position: absolute;
+    top: 28%;
+    z-index: 2;
+}
+
+.rotate-left {
+    left: -10%;
+    transform: rotate(25deg);
+}
+
+.rotate-right {
+    right: -10%;
+    transform: rotate(-25deg);
+}
+
+.about-img img {
+    position: relative;
+    z-index: 2;
+    border-radius: 10px;
+}
+
+.experiences {
+    width: 160px;
+    height: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 35px;
+    text-align: center;
+    border-radius: 10px;
+    z-index: 3;
+    animation: mymove 5s infinite ease-in-out;
+}
+
+@keyframes mymove {
+    from {
+        top: -202px;
+    }
+
+    to {
+        top: 102%;
+    }
+}
+
+.col-md-4 {
+    margin-top: 50px;
+}
+
+.card .btn {
+    width: 100%;
+    /* Full width for the button */
+    padding: 10px;
+    background-color: #007bff;
+    /* Primary button color */
+    color: white;
+    /* Button text color */
+    text-align: center;
+    /* Center text */
+    border: none;
+    /* Remove border */
+    border-radius: 4px;
+    /* Rounded corners */
+    text-decoration: none;
+    /* Remove underline */
+    margin-bottom: 0;
+    /* Remove margin */
+}
+
+.card .btn:hover {
+    background-color: #EC9428;
+    /* Darker shade on hover */
+}
+
+/* Additional classes for alignment */
+.d-flex {
+    display: flex;
+    /* Flex container */
+}
+
+.justify-content-between {
+    justify-content: space-between;
+    /* Space between elements */
+}
+
+.align-items-center {
+    align-items: center;
+    /* Align items vertically in the center */
+}
+
+.mt-auto {
+    margin-top: auto;
+    /* Push the button to the bottom */
+}
+.carouselExample .carousel-item{
+    height: 200px;
+}
