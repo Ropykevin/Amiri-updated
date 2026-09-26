@@ -70,6 +70,21 @@ CANONICAL_SLUGS = {
     "blog": "/insights",
     "blogs": "/insights",
 }
+SITEMAP_PAGES = (
+    ("/", "weekly", "1.0"),
+    ("/about", "monthly", "0.8"),
+    ("/partners", "monthly", "0.7"),
+    ("/cover", "monthly", "0.8"),
+    ("/health", "monthly", "0.8"),
+    ("/motor", "monthly", "0.8"),
+    ("/property", "monthly", "0.8"),
+    ("/group-life", "monthly", "0.8"),
+    ("/wiba", "monthly", "0.8"),
+    ("/money", "monthly", "0.7"),
+    ("/insights", "weekly", "0.6"),
+    ("/quote", "monthly", "0.6"),
+    ("/contact", "monthly", "0.8"),
+)
 LEGACY_HTML_REDIRECTS = {
     "index.html": "/",
     "about.html": "/about",
@@ -172,9 +187,13 @@ if env_flag("BEHIND_PROXY", "1"):
 SITE_ORIGIN = "https://amiriinsuranceagency.com"
 
 
+def public_origin() -> str:
+    return (app.config.get("PUBLIC_URL") or SITE_ORIGIN).rstrip("/") or SITE_ORIGIN
+
+
 @app.context_processor
 def inject_seo():
-    origin = (app.config.get("PUBLIC_URL") or SITE_ORIGIN).rstrip("/") or SITE_ORIGIN
+    origin = public_origin()
     path = request.path or "/"
     if path != "/" and path.endswith("/"):
         path = path.rstrip("/")
@@ -1402,7 +1421,26 @@ def robots():
 
 @app.get("/sitemap.xml")
 def sitemap():
-    return send_from_directory(ROOT, "sitemap.xml", mimetype="application/xml")
+    origin = public_origin()
+    today = datetime.now().strftime("%Y-%m-%d")
+    urls = []
+    for path, changefreq, priority in SITEMAP_PAGES:
+        loc = origin + path
+        urls.append(
+            "  <url>\n"
+            f"    <loc>{loc}</loc>\n"
+            f"    <lastmod>{today}</lastmod>\n"
+            f"    <changefreq>{changefreq}</changefreq>\n"
+            f"    <priority>{priority}</priority>\n"
+            "  </url>"
+        )
+    body = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls)
+        + "\n</urlset>\n"
+    )
+    return Response(body, mimetype="application/xml")
 
 
 @app.get("/uploads/<path:filename>")
