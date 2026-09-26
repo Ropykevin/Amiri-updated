@@ -7,6 +7,64 @@
   <meta name="author" content="Amiri Insurance Agency" />
   <meta name="robots" content="{% block robots %}index, follow{% endblock %}" />
   <title>{% block title %}Amiri Insurance{% endblock %}</title>
+  <link rel="canonical" href="{% block canonical %}{{ canonical_url }}{% endblock %}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Amiri Insurance Agency" />
+  <meta property="og:locale" content="en_KE" />
+  <meta property="og:url" content="{{ self.canonical() }}" />
+  <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}{{ self.description() }}{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{{ og_image_url }}{% endblock %}" />
+  <meta property="og:image:alt" content="Amiri Insurance Agency" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ self.og_title() }}" />
+  <meta name="twitter:description" content="{{ self.og_description() }}" />
+  <meta name="twitter:image" content="{{ self.og_image() }}" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "InsuranceAgency",
+    "name": "Amiri Insurance Agency",
+    "description": "Kenya's trusted insurance partner since 2017. Health, motor, property, life, and business cover.",
+    "url": "{{ site_origin }}",
+    "logo": "{{ og_image_url }}",
+    "image": "{{ og_image_url }}",
+    "foundingDate": "2017",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Utalii House, 3rd Floor, Wing B, Utalii Lane",
+      "addressLocality": "Nairobi",
+      "addressCountry": "KE"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+254746158002",
+      "contactType": "customer service",
+      "availableLanguage": ["English", "Swahili"]
+    },
+    "email": "info@amiriinsuranceagency.com",
+    "openingHours": "Mo-Fr 09:00-21:00",
+    "areaServed": { "@type": "Country", "name": "Kenya" },
+    "sameAs": [
+      "https://www.facebook.com/amiriinsurance/",
+      "https://twitter.com/amiriinsurance",
+      "https://www.instagram.com/amiriinsurance/",
+      "https://www.linkedin.com/company/104630355/"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Insurance cover",
+      "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Health Insurance", "url": "{{ site_origin }}/health"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Motor Insurance", "url": "{{ site_origin }}/motor"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Property Insurance", "url": "{{ site_origin }}/property"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Group Life", "url": "{{ site_origin }}/group-life"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "WIBA", "url": "{{ site_origin }}/wiba"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Money Insurance", "url": "{{ site_origin }}/money"}}
+      ]
+    }
+  }
+  </script>
   <link href="/static/img/icon/icon-02-primary.png" rel="icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

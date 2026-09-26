@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set active = "insights" %}
-{% block title %}Blog - Amiri Insurance Agency{% endblock %}
-{% block description %}Explore our collection of insurance and financial planning articles. Stay informed with expert insights from Amiri Insurance Agency.{% endblock %}
+{% block title %}Insurance Insights & Guides | Amiri Insurance{% endblock %}
+{% block description %}Practical insurance guides for Kenyan families and businesses — health, motor, property, and planning tips from Amiri Insurance Agency.{% endblock %}
 {% block extra_head %}
   <meta name="keywords"
         content="Amiri Insurance blog, insurance articles, financial planning blog, Kenya insurance blog" />
@@ -98,18 +98,13 @@
     <div class="container my-5">
       <div class="search-box">
         <div class="row align-items-center">
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="input-group">
-              <input type="text" class="form-control" id="searchInput" placeholder="Search blog posts...">
+              <input type="text" class="form-control" id="searchInput" placeholder="Search articles">
               <button class="btn btn-primary" type="button" id="searchBtn">
                 <i class="fas fa-search"></i>
               </button>
             </div>
-          </div>
-          <div class="col-md-6 text-md-end mt-3 mt-md-0">
-            <a href="/admin/login" class="btn btn-success">
-              <i class="fas fa-plus me-2"></i>Write a Blog Post
-            </a>
           </div>
         </div>
         <div class="filter-buttons mt-4">

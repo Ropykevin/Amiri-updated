@@ -1,12 +1,12 @@
 User-agent: *
 Allow: /
 
-# Sitemap
 Sitemap: https://amiriinsuranceagency.com/sitemap.xml
 
-# Disallow admin areas
 Disallow: /admin
 Disallow: /admin/
 Disallow: /api/
 Disallow: /healthz
 Disallow: /private/
+Disallow: /insights/post
+

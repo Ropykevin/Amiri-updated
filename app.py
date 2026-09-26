@@ -50,7 +50,6 @@ PAGE_ROUTES = {
     "about": "about.html",
     "partners": "partners.html",
     "cover": "service.html",
-    "services": "service.html",
     "health": "health.html",
     "motor": "mortorvehicle.html",
     "property": "property.html",
@@ -58,14 +57,18 @@ PAGE_ROUTES = {
     "wiba": "wiba.html",
     "money": "moneyinsurance.html",
     "quote": "appointment.html",
-    "appointment": "appointment.html",
     "insights": "blog.html",
-    "blog": "blog.html",
     "contact": "contact.html",
     "team": "team.html",
     "testimonials": "testimonial.html",
     "features": "feature.html",
-    "blogs": "blogs.html",
+}
+CANONICAL_SLUGS = {
+    "clients": "/about",
+    "services": "/cover",
+    "appointment": "/quote",
+    "blog": "/insights",
+    "blogs": "/insights",
 }
 LEGACY_HTML_REDIRECTS = {
     "index.html": "/",
@@ -165,6 +168,21 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=int(os.environ.get("S
 IDLE_MINUTES = int(os.environ.get("SESSION_IDLE_MINUTES") or "60")
 if env_flag("BEHIND_PROXY", "1"):
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
+SITE_ORIGIN = "https://amiriinsuranceagency.com"
+
+
+@app.context_processor
+def inject_seo():
+    origin = (app.config.get("PUBLIC_URL") or SITE_ORIGIN).rstrip("/") or SITE_ORIGIN
+    path = request.path or "/"
+    if path != "/" and path.endswith("/"):
+        path = path.rstrip("/")
+    return {
+        "site_origin": origin,
+        "canonical_url": origin + path,
+        "og_image_url": origin + "/static/img/icon/icon-02-primary.png",
+    }
 
 _db_ready = False
 
@@ -1384,7 +1402,7 @@ def robots():
 
 @app.get("/sitemap.xml")
 def sitemap():
-    return send_from_directory(ROOT, "sitemap.xml")
+    return send_from_directory(ROOT, "sitemap.xml", mimetype="application/xml")
 
 
 @app.get("/uploads/<path:filename>")
@@ -1475,8 +1493,8 @@ def admin_legacy(legacy: str):
 def public_page(slug: str):
     if slug in {"favicon.ico"}:
         return redirect(url_for("static", filename="img/icon/icon-02-primary.png"))
-    if slug == "clients":
-        return redirect("/about", 301)
+    if slug in CANONICAL_SLUGS:
+        return redirect(CANONICAL_SLUGS[slug], 301)
     if slug.endswith(".html"):
         target = LEGACY_HTML_REDIRECTS.get(slug, "/" + slug[:-5])
         return redirect_with_query(target)
