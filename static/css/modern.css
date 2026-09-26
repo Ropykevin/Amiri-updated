@@ -1226,6 +1226,7 @@ a {
   overflow: hidden;
   min-height: 420px;
   position: relative;
+  margin: 0;
 }
 
 .product-hero-img img {
@@ -1234,6 +1235,22 @@ a {
   object-fit: cover;
   position: absolute;
   inset: 0;
+}
+
+.product-hero-img figcaption,
+.product-scene-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 1.1rem 1.2rem 1.15rem;
+  background: linear-gradient(transparent, rgba(6, 21, 37, 0.82));
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  z-index: 1;
 }
 
 .contact-tile {
