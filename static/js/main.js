@@ -1,7 +1,7 @@
 (function ($) {
   "use strict";
+  if (!$) return;
 
-  // Spinner
   var spinner = function () {
     setTimeout(function () {
       if ($("#spinner").length > 0) {
@@ -11,10 +11,10 @@
   };
   spinner();
 
-  // Initiate the wowjs
-  new WOW().init();
+  if (typeof WOW === "function") {
+    new WOW().init();
+  }
 
-  // Sticky Navbar
   $(window).scroll(function () {
     if ($(this).scrollTop() > 40) {
       $(".sticky-top").addClass("shadow-sm is-scrolled").css("top", "0px");
@@ -23,7 +23,6 @@
     }
   });
 
-  // Back to top button
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
       $(".back-to-top").fadeIn("slow");
@@ -36,26 +35,28 @@
     return false;
   });
 
-  // Facts counter
-  $('[data-toggle="counter-up"]').counterUp({
-    delay: 10,
-    time: 2000,
-  });
+  if ($.fn.counterUp) {
+    $('[data-toggle="counter-up"]').counterUp({
+      delay: 10,
+      time: 2000,
+    });
+  }
 
-  // Testimonials carousel
-  $(".testimonial-carousel").owlCarousel({
-    autoplay: true,
-    smartSpeed: 1000,
-    items: 1,
-    dots: false,
-    loop: true,
-    nav: true,
-    navText: [
-      '<i class="bi bi-chevron-left"></i>',
-      '<i class="bi bi-chevron-right"></i>',
-    ],
-  });
-})(jQuery);
+  if ($.fn.owlCarousel) {
+    $(".testimonial-carousel").owlCarousel({
+      autoplay: true,
+      smartSpeed: 1000,
+      items: 1,
+      dots: false,
+      loop: true,
+      nav: true,
+      navText: [
+        '<i class="bi bi-chevron-left"></i>',
+        '<i class="bi bi-chevron-right"></i>',
+      ],
+    });
+  }
+})(window.jQuery);
 
 document.addEventListener("DOMContentLoaded", function () {
   // Get the current page path
