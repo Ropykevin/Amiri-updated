@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 from pathlib import Path
 from urllib.parse import quote, urlparse
+from xml.sax.saxutils import escape
 
 from flask import (
     Flask,
@@ -1419,6 +1420,54 @@ def robots():
     return send_from_directory(ROOT, "robots.txt")
 
 
+@app.get("/favicon.ico")
+def favicon():
+    return redirect("/static/img/icon/icon-02-primary.png", 301)
+
+
+@app.get("/site.webmanifest")
+def webmanifest():
+    return send_from_directory(ROOT, "site.webmanifest", mimetype="application/manifest+json")
+
+
+@app.get("/rss.xml")
+@app.get("/feed.xml")
+def rss_feed():
+    origin = public_origin()
+    items = []
+    for post in published_posts()[:20]:
+        post_id = escape(str(post.get("id") or post.get("slug") or ""))
+        if not post_id:
+            continue
+        title = escape(str(post.get("title") or "Amiri Insurance article"))
+        desc = escape(str(post.get("excerpt") or post.get("metaDescription") or title))
+        link = f"{origin}/insights/post?id={quote(post_id)}"
+        pub = str(post.get("publishDate") or post.get("createdAt") or "")
+        pub_tag = f"      <pubDate>{escape(pub)}</pubDate>\n" if pub else ""
+        items.append(
+            "    <item>\n"
+            f"      <title>{title}</title>\n"
+            f"      <link>{link}</link>\n"
+            f"      <guid isPermaLink=\"false\">{escape(post_id)}</guid>\n"
+            f"{pub_tag}"
+            f"      <description>{desc}</description>\n"
+            "    </item>"
+        )
+    body = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0">\n'
+        "  <channel>\n"
+        "    <title>Amiri Insurance Insights</title>\n"
+        f"    <link>{origin}/insights</link>\n"
+        "    <description>Insurance guides for Kenyan families and businesses.</description>\n"
+        f"    <language>en-ke</language>\n"
+        + ("\n".join(items) + "\n" if items else "")
+        + "  </channel>\n"
+        "</rss>\n"
+    )
+    return Response(body, mimetype="application/rss+xml")
+
+
 @app.get("/sitemap.xml")
 def sitemap():
     origin = public_origin()
@@ -1529,8 +1578,6 @@ def admin_legacy(legacy: str):
 
 @app.get("/<slug>")
 def public_page(slug: str):
-    if slug in {"favicon.ico"}:
-        return redirect(url_for("static", filename="img/icon/icon-02-primary.png"))
     if slug in CANONICAL_SLUGS:
         return redirect(CANONICAL_SLUGS[slug], 301)
     if slug.endswith(".html"):

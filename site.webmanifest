@@ -1,0 +1,19 @@
+{
+  "name": "Amiri Insurance Agency",
+  "short_name": "Amiri",
+  "description": "Kenya's trusted insurance partner since 2017. Health, motor, property, life, WIBA, and money cover.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "lang": "en-KE",
+  "background_color": "#ffffff",
+  "theme_color": "#0b4a73",
+  "icons": [
+    {
+      "src": "/static/img/icon/icon-02-primary.png",
+      "type": "image/png",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 
 Sitemap: https://amiriinsuranceagency.com/sitemap.xml
+# RSS: https://amiriinsuranceagency.com/rss.xml
 
 Disallow: /admin
 Disallow: /admin/

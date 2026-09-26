@@ -12,3 +12,5 @@ data/*.json
 !data/sample-*.json
 *.json.tmp
 .DS_Store
+.env.example
+.env
