@@ -48,7 +48,6 @@ MAX_IMAGE_BYTES = 5 * 1024 * 1024
 PROTECTED_TEMPLATES = {"admin.html", "admin-blog.html", "post-blog.html", "invoice.html"}
 PAGE_ROUTES = {
     "about": "about.html",
-    "clients": "clients.html",
     "partners": "partners.html",
     "cover": "service.html",
     "services": "service.html",
@@ -71,7 +70,7 @@ PAGE_ROUTES = {
 LEGACY_HTML_REDIRECTS = {
     "index.html": "/",
     "about.html": "/about",
-    "clients.html": "/clients",
+    "clients.html": "/about",
     "partners.html": "/partners",
     "service.html": "/cover",
     "health.html": "/health",
@@ -1476,6 +1475,8 @@ def admin_legacy(legacy: str):
 def public_page(slug: str):
     if slug in {"favicon.ico"}:
         return redirect(url_for("static", filename="img/icon/icon-02-primary.png"))
+    if slug == "clients":
+        return redirect("/about", 301)
     if slug.endswith(".html"):
         target = LEGACY_HTML_REDIRECTS.get(slug, "/" + slug[:-5])
         return redirect_with_query(target)
