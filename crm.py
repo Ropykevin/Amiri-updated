@@ -71,12 +71,132 @@ def fmt_date(value) -> str:
 
 def parse_date(value: str):
     text = (value or "").strip()[:10]
-    if not text:
+    if len(text) < 8:
         return None
     try:
         return datetime.strptime(text, "%Y-%m-%d").date()
     except ValueError:
         return None
+
+
+def _invoice_paid_on(row: dict):
+    return row.get("paid_at") or (row.get("updated_at").date() if isinstance(row.get("updated_at"), datetime) else date.today())
+
+
+def _sync_paid_invoice(conn, row: dict) -> None:
+    if (row.get("status") or "") != "paid":
+        return
+    deal_id = row.get("deal_id")
+    if not deal_id:
+        return
+    number = row.get("number") or ""
+    marker = f"Invoice {number}"
+    existing = conn.execute(
+        "SELECT id FROM crm_payments WHERE deal_id = %s AND notes = %s",
+        (deal_id, marker),
+    ).fetchone()
+    if existing:
+        return
+    deal = conn.execute("SELECT id FROM crm_deals WHERE id = %s", (deal_id,)).fetchone()
+    if not deal:
+        return
+    conn.execute(
+        """
+        INSERT INTO crm_payments (id, deal_id, method, mpesa_code, amount, paid_at, notes, created_by)
+        VALUES (%s, %s, 'other', '', %s, %s, %s, %s)
+        """,
+        (
+            uuid.uuid4().hex[:12],
+            deal_id,
+            money(row.get("amount")),
+            _invoice_paid_on(row),
+            marker,
+            row.get("created_by"),
+        ),
+    )
+
+
+def _sum_revenue(conn, start=None, owner_id: str | None = None) -> float:
+    pay_sql = "SELECT p.amount AS n FROM crm_payments p JOIN crm_deals d ON d.id = p.deal_id WHERE 1=1"
+    inv_sql = (
+        "SELECT i.amount AS n FROM crm_invoices i "
+        "WHERE i.status = 'paid' AND i.deal_id IS NULL"
+    )
+    pay_args: list = []
+    inv_args: list = []
+    if start:
+        pay_sql += " AND p.paid_at >= %s"
+        inv_sql += " AND COALESCE(i.paid_at, i.updated_at::date) >= %s"
+        pay_args.append(start)
+        inv_args.append(start)
+    if owner_id:
+        pay_sql += " AND d.owner_id = %s"
+        inv_sql += " AND i.created_by = %s"
+        pay_args.append(owner_id)
+        inv_args.append(owner_id)
+    row = conn.execute(
+        f"SELECT COALESCE(SUM(n), 0) AS n FROM ({pay_sql} UNION ALL {inv_sql}) t",
+        tuple(pay_args + inv_args),
+    ).fetchone()
+    return money(row["n"])
+
+
+def _staff_revenue(conn, start, owner_id: str | None = None) -> list:
+    pay_sql = (
+        "SELECT d.owner_id AS owner_id, p.amount AS n, p.deal_id AS deal_id "
+        "FROM crm_payments p JOIN crm_deals d ON d.id = p.deal_id WHERE p.paid_at >= %s"
+    )
+    inv_sql = (
+        "SELECT i.created_by AS owner_id, i.amount AS n, i.id AS deal_id "
+        "FROM crm_invoices i WHERE i.status = 'paid' AND i.deal_id IS NULL "
+        "AND COALESCE(i.paid_at, i.updated_at::date) >= %s"
+    )
+    args: list = [start]
+    if owner_id:
+        pay_sql += " AND d.owner_id = %s"
+        args.append(owner_id)
+    args.append(start)
+    if owner_id:
+        inv_sql += " AND i.created_by = %s"
+        args.append(owner_id)
+    return conn.execute(
+        f"""
+        SELECT owner_id, COALESCE(SUM(n), 0) AS revenue, COUNT(DISTINCT deal_id) AS deals
+        FROM ({pay_sql} UNION ALL {inv_sql}) t
+        GROUP BY owner_id
+        ORDER BY revenue DESC
+        """,
+        tuple(args),
+    ).fetchall()
+
+
+def _month_series(conn, start, owner_id: str | None = None) -> list:
+    pay_sql = (
+        "SELECT to_char(date_trunc('month', p.paid_at), 'YYYY-MM') AS month, p.amount AS n "
+        "FROM crm_payments p JOIN crm_deals d ON d.id = p.deal_id WHERE p.paid_at >= %s"
+    )
+    inv_sql = (
+        "SELECT to_char(date_trunc('month', COALESCE(i.paid_at, i.updated_at::date)), 'YYYY-MM') AS month, i.amount AS n "
+        "FROM crm_invoices i WHERE i.status = 'paid' AND i.deal_id IS NULL "
+        "AND COALESCE(i.paid_at, i.updated_at::date) >= %s"
+    )
+    args: list = [start]
+    if owner_id:
+        pay_sql += " AND d.owner_id = %s"
+        args.append(owner_id)
+    args.append(start)
+    if owner_id:
+        inv_sql += " AND i.created_by = %s"
+        args.append(owner_id)
+    return conn.execute(
+        f"""
+        SELECT month, COALESCE(SUM(n), 0) AS revenue
+        FROM ({pay_sql} UNION ALL {inv_sql}) t
+        GROUP BY 1
+        ORDER BY 1
+        """,
+        tuple(args),
+    ).fetchall()
 
 
 def service_from_cover(cover: str) -> str:
@@ -245,6 +365,14 @@ def init_crm_schema() -> None:
             ON CONFLICT (key) DO NOTHING
             """,
             (str(int(DEFAULT_MONTHLY_TARGET)),),
+        )
+        conn.execute("ALTER TABLE crm_invoices ADD COLUMN IF NOT EXISTS paid_at DATE")
+        conn.execute(
+            """
+            UPDATE crm_invoices
+            SET paid_at = COALESCE(paid_at, updated_at::date, CURRENT_DATE)
+            WHERE status = 'paid' AND paid_at IS NULL
+            """
         )
         conn.commit()
     CRM_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -1060,45 +1188,10 @@ def dashboard(owner_id: str | None = None) -> dict:
     owner_args = (owner_id,) if owner_id else ()
     with db.pool().connection() as conn:
         names = staff_map(conn)
-        total = conn.execute(
-            "SELECT COALESCE(SUM(p.amount), 0) AS n FROM crm_payments p JOIN crm_deals d ON d.id = p.deal_id WHERE 1=1"
-            + owner_sql,
-            owner_args,
-        ).fetchone()["n"]
-        monthly = conn.execute(
-            "SELECT COALESCE(SUM(p.amount), 0) AS n FROM crm_payments p JOIN crm_deals d ON d.id = p.deal_id WHERE p.paid_at >= %s"
-            + owner_sql,
-            (month_start, *owner_args),
-        ).fetchone()["n"]
-        staff_rows = conn.execute(
-            """
-            SELECT d.owner_id, COALESCE(SUM(p.amount), 0) AS revenue, COUNT(DISTINCT d.id) AS deals
-            FROM crm_payments p
-            JOIN crm_deals d ON d.id = p.deal_id
-            WHERE p.paid_at >= %s
-            """
-            + owner_sql
-            + """
-            GROUP BY d.owner_id
-            ORDER BY revenue DESC
-            """,
-            (month_start, *owner_args),
-        ).fetchall()
-        series = conn.execute(
-            """
-            SELECT to_char(date_trunc('month', p.paid_at), 'YYYY-MM') AS month,
-                   COALESCE(SUM(p.amount), 0) AS revenue
-            FROM crm_payments p
-            JOIN crm_deals d ON d.id = p.deal_id
-            WHERE p.paid_at >= %s
-            """
-            + owner_sql
-            + """
-            GROUP BY 1
-            ORDER BY 1
-            """,
-            (year_ago, *owner_args),
-        ).fetchall()
+        total = _sum_revenue(conn, owner_id=owner_id)
+        monthly = _sum_revenue(conn, start=month_start, owner_id=owner_id)
+        staff_rows = _staff_revenue(conn, month_start, owner_id)
+        series = _month_series(conn, year_ago, owner_id)
         leads = conn.execute(
             "SELECT status, COUNT(*) AS n FROM crm_leads WHERE 1=1" + lead_sql + " GROUP BY status",
             owner_args,
@@ -1137,20 +1230,7 @@ def dashboard(owner_id: str | None = None) -> dict:
             ).fetchone()["n"]
         else:
             clients = conn.execute("SELECT COUNT(*) AS n FROM crm_accounts").fetchone()["n"]
-        year_staff = conn.execute(
-            """
-            SELECT d.owner_id, COALESCE(SUM(p.amount), 0) AS revenue
-            FROM crm_payments p
-            JOIN crm_deals d ON d.id = p.deal_id
-            WHERE p.paid_at >= %s
-            """
-            + owner_sql
-            + """
-            GROUP BY d.owner_id
-            ORDER BY revenue DESC
-            """,
-            (year_start, *owner_args),
-        ).fetchall()
+        year_staff = _staff_revenue(conn, year_start, owner_id)
         target_row = conn.execute("SELECT value FROM crm_settings WHERE key = 'monthly_target'").fetchone()
     target = money(target_row["value"]) if target_row else DEFAULT_MONTHLY_TARGET
     if target <= 0:
@@ -1388,14 +1468,15 @@ def create_invoice(payload: dict, actor_id: str | None) -> dict:
     client_type = payload.get("clientType") if payload.get("clientType") in CLIENT_TYPES else "individual"
     status = payload.get("status") if payload.get("status") in {"unpaid", "paid", "void"} else "unpaid"
     invoice_id = uuid.uuid4().hex[:12]
+    paid_at = date.today() if status == "paid" else None
     with db.pool().connection() as conn:
         number = _next_invoice_number(conn)
         conn.execute(
             """
             INSERT INTO crm_invoices (
                 id, number, account_id, deal_id, client_name, client_email, client_mobile,
-                client_type, service, description, amount, status, due_date, notes, created_by
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                client_type, service, description, amount, status, due_date, notes, created_by, paid_at
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (
                 invoice_id,
@@ -1413,8 +1494,12 @@ def create_invoice(payload: dict, actor_id: str | None) -> dict:
                 parse_date(str(payload.get("dueDate") or "")),
                 (payload.get("notes") or "")[:2000],
                 actor_id,
+                paid_at,
             ),
         )
+        row = conn.execute("SELECT * FROM crm_invoices WHERE id = %s", (invoice_id,)).fetchone()
+        if row:
+            _sync_paid_invoice(conn, dict(row))
         conn.commit()
     return get_invoice(invoice_id)
 
@@ -1426,12 +1511,17 @@ def update_invoice(invoice_id: str, payload: dict) -> dict | None:
             return None
         status = payload.get("status") if payload.get("status") in {"unpaid", "paid", "void"} else current["status"]
         amount = money(payload["amount"]) if "amount" in payload else current["amount"]
+        paid_at = current.get("paid_at")
+        if status == "paid":
+            paid_at = paid_at or date.today()
+        else:
+            paid_at = None
         conn.execute(
             """
             UPDATE crm_invoices
             SET client_name = %s, client_email = %s, client_mobile = %s, client_type = %s,
                 service = %s, description = %s, amount = %s, status = %s, due_date = %s,
-                notes = %s, updated_at = NOW()
+                notes = %s, paid_at = %s, updated_at = NOW()
             WHERE id = %s
             """,
             (
@@ -1445,8 +1535,12 @@ def update_invoice(invoice_id: str, payload: dict) -> dict | None:
                 status,
                 parse_date(str(payload.get("dueDate") or current.get("due_date") or "")),
                 payload.get("notes") if "notes" in payload else current.get("notes") or "",
+                paid_at,
                 invoice_id,
             ),
         )
+        row = conn.execute("SELECT * FROM crm_invoices WHERE id = %s", (invoice_id,)).fetchone()
+        if row:
+            _sync_paid_invoice(conn, dict(row))
         conn.commit()
     return get_invoice(invoice_id)

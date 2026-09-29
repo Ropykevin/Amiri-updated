@@ -190,7 +190,7 @@
   function renderPayments(payments) {
     var box = document.getElementById("crmPayList");
     if (!payments || !payments.length) {
-      box.innerHTML = '<p class="text-muted small mb-0">No payments yet. Revenue counts when you add M-Pesa or cheque.</p>';
+      box.innerHTML = '<p class="text-muted small mb-0">No payments yet. Add M-Pesa or cheque here, or mark an invoice as paid — that is what updates dashboard revenue.</p>';
       return;
     }
     box.innerHTML = payments.map(function (pay) {
