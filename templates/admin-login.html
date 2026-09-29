@@ -73,7 +73,37 @@
             outline: none;
         }
 
-   
+        .mfa-setup {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .mfa-qr {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 8px auto 12px;
+        }
+
+        .mfa-qr img,
+        .mfa-qr canvas {
+            display: block;
+            width: 180px;
+            height: 180px;
+        }
+
+        .mfa-secret {
+            display: block;
+            word-break: break-all;
+            background: #f5f8fb;
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #0b4a73;
+        }
 
         .login-form .input-group .form-control {
             position: relative;
@@ -210,7 +240,11 @@
                     <label for="mfaCode" class="form-label">Authenticator code</label>
                     <input type="text" class="form-control" id="mfaCode" name="mfa" inputmode="numeric" autocomplete="one-time-code" maxlength="6" />
                     <p class="small text-muted mt-2 mb-0" id="mfaHint"></p>
-                    <code id="mfaSecret" class="d-block small mt-2" style="display:none;"></code>
+                    <div id="mfaSetup" class="mfa-setup" style="display:none;">
+                      <div id="mfaQr" class="mfa-qr" aria-label="Authenticator QR code"></div>
+                      <p class="small text-muted mb-1">Can’t scan? Enter this key in the app:</p>
+                      <code id="mfaSecret" class="mfa-secret"></code>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-login">
@@ -229,6 +263,7 @@
     <!-- JavaScript Libraries -->
 {% endblock %}
 {% block extra_scripts %}
+<script src="/static/lib/qrcode.min.js"></script>
 <script src="/static/js/admin-session.js"></script>
 <script>
         (function () {
@@ -340,12 +375,26 @@
                 if (data.success && (data.mfaRequired || data.mfaSetup)) {
                     mfaBox.style.display = 'block';
                     document.getElementById('mfaHint').textContent = data.message || 'Enter the 6-digit code.';
+                    var setupEl = document.getElementById('mfaSetup');
                     var secretEl = document.getElementById('mfaSecret');
-                    if (data.secret) {
-                        secretEl.style.display = 'block';
-                        secretEl.textContent = data.secret;
+                    var qrEl = document.getElementById('mfaQr');
+                    if (data.mfaSetup && (data.otpauth || data.secret)) {
+                        setupEl.style.display = 'block';
+                        secretEl.textContent = data.secret || '';
+                        qrEl.innerHTML = '';
+                        if (data.otpauth && typeof QRCode === 'function') {
+                            new QRCode(qrEl, {
+                                text: data.otpauth,
+                                width: 180,
+                                height: 180,
+                                correctLevel: QRCode.CorrectLevel.M
+                            });
+                            qrEl.removeAttribute('title');
+                        }
                     } else {
-                        secretEl.style.display = 'none';
+                        setupEl.style.display = 'none';
+                        qrEl.innerHTML = '';
+                        secretEl.textContent = '';
                     }
                     showAlert(data.message || 'Authenticator code required.', 'info');
                     return;
