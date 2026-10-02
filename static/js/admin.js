@@ -209,7 +209,8 @@
         "<td>" + esc(post.category) + "</td>" +
         '<td><span class="status-pill status-' + esc(post.status || "draft") + '">' + esc(post.status || "draft") + "</span></td>" +
         "<td>" + esc(post.publishDate || post.createdAt || "—") + "</td>" +
-        '<td><button class="btn btn-sm btn-outline-success me-1" data-publish="' + esc(post.id) + '">Publish</button>' +
+        '<td class="text-nowrap"><a class="btn btn-sm btn-outline-primary me-1" href="/admin/post?id=' + encodeURIComponent(post.id) + '">Edit</a>' +
+        '<button class="btn btn-sm btn-outline-success me-1" data-publish="' + esc(post.id) + '">Publish</button>' +
         '<button class="btn btn-sm btn-outline-danger" data-delete-post="' + esc(post.id) + '">Delete</button></td>' +
         "</tr>"
       );

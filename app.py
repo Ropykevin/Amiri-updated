@@ -279,7 +279,8 @@ def ensure_db():
     try:
         db.init_db()
         _db_ready = True
-    except Exception:
+    except Exception as exc:
+        print("PostgreSQL not ready:", repr(exc), flush=True)
         if request.path.startswith("/api/auth/"):
             return
         if request.path.startswith("/api/"):
@@ -825,6 +826,43 @@ def admin_list_posts():
         int(request.args.get("page") or 1),
         int(request.args.get("limit") or 200),
     ))
+
+
+@app.get("/api/admin/posts/<post_id>")
+@login_required_api
+def admin_get_post(post_id: str):
+    post = db.get_post(post_id)
+    if not post:
+        return jsonify({"success": False, "message": "Post not found"}), 404
+    return jsonify(post)
+
+
+@app.post("/api/admin/posts/<post_id>")
+@login_required_api
+def admin_update_post(post_id: str):
+    current = db.get_post(post_id)
+    if not current:
+        return jsonify({"success": False, "message": "Post not found"}), 404
+    try:
+        edited = post_from_form()
+    except ValueError as exc:
+        try:
+            errors = json.loads(str(exc))
+        except json.JSONDecodeError:
+            errors = [str(exc)]
+        return jsonify({"success": False, "message": "Validation failed", "errors": errors}), 400
+    post = dict(current)
+    for key in (
+        "title", "content", "excerpt", "author", "authorBio", "authorSocial",
+        "category", "tags", "publishDate", "metaDescription", "slug",
+    ):
+        post[key] = edited[key]
+    if edited.get("image"):
+        post["image"] = edited["image"]
+    post["id"] = current["id"]
+    post["updatedAt"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    db.update_post(post)
+    return jsonify({"success": True, "message": "Changes saved.", "postId": post["id"]})
 
 
 @app.put("/api/admin/posts")

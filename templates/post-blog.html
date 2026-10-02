@@ -248,6 +248,55 @@
         // Set default publish date to today
         document.getElementById('publishDate').valueAsDate = new Date();
 
+        const editId = new URLSearchParams(window.location.search).get('id') || '';
+
+        function setVal(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.value = value || '';
+        }
+
+        function loadPostForEdit(id) {
+            document.querySelector('.page-header h1').textContent = 'Edit Blog Post';
+            document.querySelector('.breadcrumb-item.active').textContent = 'Edit Post';
+            document.querySelector('.blog-form h2').textContent = 'Edit your post';
+            document.querySelector('.btn-submit').innerHTML = '<i class="fas fa-save me-2"></i>Save changes';
+            fetch('/api/admin/posts/' + encodeURIComponent(id), { credentials: 'same-origin' })
+                .then(function (res) {
+                    if (res.status === 401) {
+                        window.location.href = '/admin/login?next=' + encodeURIComponent('/admin/post?id=' + id);
+                        return null;
+                    }
+                    if (!res.ok) throw new Error('Post not found');
+                    return res.json();
+                })
+                .then(function (post) {
+                    if (!post) return;
+                    const social = post.authorSocial || {};
+                    setVal('blogTitle', post.title);
+                    setVal('blogExcerpt', post.excerpt);
+                    setVal('authorName', post.author);
+                    setVal('authorBio', post.authorBio);
+                    setVal('authorLinkedin', social.linkedin);
+                    setVal('authorTwitter', social.twitter);
+                    setVal('authorWebsite', social.website);
+                    setVal('blogCategory', post.category);
+                    setVal('blogTags', post.tags);
+                    setVal('publishDate', post.publishDate);
+                    setVal('metaDescription', post.metaDescription);
+                    quill.setContents([]);
+                    quill.clipboard.dangerouslyPasteHTML(0, post.content || '');
+                    if (post.image) {
+                        document.getElementById('imagePreview').innerHTML =
+                            '<img class="image-preview" alt="Current image"><small class="d-block text-muted mt-1">Current image. Choose a file only to replace it.</small>';
+                        document.querySelector('#imagePreview img').src = post.image;
+                    }
+                    updateProgress();
+                })
+                .catch(function (err) {
+                    showMessage(err.message || 'Could not load this post.', 'error');
+                });
+        }
+
         // Image preview functionality
         document.getElementById('blogImage').addEventListener('change', function (e) {
             const file = e.target.files[0];
@@ -286,7 +335,7 @@
             // Show loading state
             const submitBtn = document.querySelector('.btn-submit');
             const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Publishing...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>' + (editId ? 'Saving...' : 'Publishing...');
             submitBtn.disabled = true;
 
             // Create FormData object for file upload
@@ -313,7 +362,7 @@
             // Submit to backend
             console.log('Submitting blog post...');
 
-            fetch('/api/posts', {
+            fetch(editId ? '/api/admin/posts/' + encodeURIComponent(editId) : '/api/posts', {
                 method: 'POST',
                 body: formData,
                 credentials: 'same-origin'
@@ -332,7 +381,12 @@
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
 
-                    if (data.success) {
+                    if (data.success && editId) {
+                        showMessage(data.message + ' Opening the admin dashboard…', 'success');
+                        setTimeout(function () {
+                            window.location.href = '/admin';
+                        }, 1200);
+                    } else if (data.success) {
                         showMessage(data.message + ' Opening the admin dashboard…', 'success');
                         document.getElementById('blogPostForm').reset();
                         quill.setText('');
@@ -398,6 +452,8 @@
             document.getElementById('blogContent').value = quill.getText().trim() ? quill.root.innerHTML : '';
             updateProgress();
         });
+
+        if (editId) loadPostForEdit(editId);
 
         // Message display function
         function showMessage(message, type) {

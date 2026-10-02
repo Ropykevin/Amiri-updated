@@ -544,6 +544,22 @@ def insert_post(post: dict) -> dict:
     return post
 
 
+def get_post(post_id: str) -> dict | None:
+    with pool().connection() as conn:
+        row = conn.execute("SELECT * FROM posts WHERE id = %s", (post_id,)).fetchone()
+    return post_to_api(row) if row else None
+
+
+def update_post(post: dict) -> dict:
+    with pool().connection() as conn:
+        conn.execute(
+            "UPDATE posts SET slug = %s, status = %s, title = %s, data = %s WHERE id = %s",
+            (post.get("slug") or "", post.get("status") or "pending", post.get("title") or "", Json(post), post["id"]),
+        )
+        conn.commit()
+    return post
+
+
 def replace_posts(posts: list) -> None:
     with pool().connection() as conn:
         conn.execute("DELETE FROM posts")
